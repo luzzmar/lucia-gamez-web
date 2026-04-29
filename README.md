@@ -9,3 +9,7 @@ npm run dev
 npm run build
 
 La carpeta publicable es dist.
+
+## Despliegue
+
+Este cambio actualiza el repositorio para activar un nuevo despliegue automático en Vercel.
