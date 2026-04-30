@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 const email = "luzzmar@gmail.com";
+const logo = "/logo-lucia-gamez.svg";
 const photos = {
   home: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=85",
   arquitectura: "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1400&q=80",
@@ -25,15 +26,16 @@ export default function App() {
   return (
     <div className="min-h-screen bg-stone-950 text-white">
       <header className="sticky top-0 z-50 border-b border-white/10 bg-stone-950/90 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-          <button onClick={() => open("home")} className="font-serif text-3xl">Lucía Gámez</button>
-          <nav className="hidden gap-5 text-sm text-stone-300 md:flex">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+          <button onClick={() => open("home")} className="flex h-24 w-56 items-center md:h-28 md:w-72">
+            <img src={logo} alt="Lucía Gámez Photo" className="h-full w-full object-contain object-left" />
+          </button>
+          <nav className="hidden gap-5 text-sm text-stone-300 md:flex md:items-center">
             <button onClick={() => open("home")}>Bienvenidos</button>
             {pages.map((item) => <button key={item[0]} onClick={() => open(item[0])}>{item[1]}</button>)}
             <button onClick={() => open("blog")}>Blog</button>
-            <button onClick={() => open("contacto")}>Contacto</button>
+            <button onClick={() => open("contacto")} className="rounded-full border border-white/40 px-5 py-3 font-medium text-white hover:bg-white hover:text-stone-950">Contacto</button>
           </nav>
-          <a href={`mailto:${email}`} className="hidden rounded-full bg-white px-5 py-3 text-sm font-medium text-stone-950 lg:inline-flex">Reservar sesión</a>
         </div>
       </header>
       {page === "home" && <Home />}
@@ -76,3 +78,10 @@ function Contact() {
 function Admin() {
   return <main className="bg-stone-100 px-6 py-24 text-stone-950"><section className="mx-auto max-w-5xl rounded-[2rem] bg-white p-8"><p className="mb-3 text-sm uppercase tracking-[0.35em] text-stone-500">Admin</p><h1 className="font-serif text-5xl">Panel de edición</h1><p className="mt-6 text-stone-600">Esta versión ya está preparada para publicarse. Para guardar cambios online hará falta conectar un CMS o almacenamiento de imágenes.</p></section></main>;
 }
+
+function runTests() {
+  console.assert(logo === "/logo-lucia-gamez.svg", "El logo debe cargarse desde public/logo-lucia-gamez.svg");
+  console.assert(!document.documentElement.innerHTML.includes("Reservar sesión"), "No debe aparecer Reservar sesión");
+}
+
+if (typeof window !== "undefined") runTests();
