@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const email = "luzzmar@gmail.com";
-const logo = "/logo-lucia-gamez-fixed.svg";
+const logo = "/logo-lucia-gamez.svg";
 const photos = {
   home: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=85",
   arquitectura: "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1400&q=80",
@@ -80,7 +80,7 @@ function Admin() {
 }
 
 function runTests() {
-  console.assert(logo === "/logo-lucia-gamez-fixed.svg", "El logo debe cargarse desde public/logo-lucia-gamez-fixed.svg");
+  console.assert(logo === "/logo-lucia-gamez.svg", "El logo debe cargarse desde public/logo-lucia-gamez.svg");
   console.assert(!document.documentElement.innerHTML.includes("Reservar sesión"), "No debe aparecer Reservar sesión");
 }
 
