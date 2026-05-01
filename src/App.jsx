@@ -40,13 +40,6 @@ const mainPages = [
     description: "Objetos, producto, bodegones, composiciones cuidadas y proyectos visuales.",
     image: photos.still,
   },
-  {
-    slug: "clientes",
-    title: "Clientes",
-    subtitle: "Galerías privadas",
-    description: "Espacio privado para que cada cliente acceda a su galería con contraseña.",
-    image: photos.clientes,
-  },
 ];
 
 const personPages = [
@@ -94,6 +87,36 @@ const personPages = [
   },
 ];
 
+const clientGalleries = [
+  {
+    slug: "familia-garcia",
+    title: "Familia García",
+    clientName: "Familia García",
+    password: "garcia2026",
+    description: "Selección privada de la sesión familiar.",
+    cover: photos.familias,
+    images: [photos.familias, photos.personas, photos.ninos, photos.comuniones],
+  },
+  {
+    slug: "comunion-alba",
+    title: "Comunión de Alba",
+    clientName: "Alba",
+    password: "alba2026",
+    description: "Galería privada de comunión.",
+    cover: photos.comuniones,
+    images: [photos.comuniones, photos.ninos, photos.familias, photos.personas],
+  },
+  {
+    slug: "new-born-demo",
+    title: "New Born Demo",
+    clientName: "Cliente demo",
+    password: "demo2026",
+    description: "Ejemplo de galería privada para recién nacido.",
+    cover: photos.newborn,
+    images: [photos.newborn, photos.dulceEspera, photos.familias, photos.ninos],
+  },
+];
+
 export default function App() {
   const [page, setPage] = useState("home");
 
@@ -113,6 +136,7 @@ export default function App() {
       {page === "personas" && <Personas open={open} />}
       {mainPage && <Portfolio item={mainPage} />}
       {personPage && <Portfolio item={personPage} />}
+      {page === "clientes" && <Clients />}
       {page === "blog" && <Blog />}
       {page === "contacto" && <Contact />}
       {page === "admin" && <Admin />}
@@ -123,6 +147,7 @@ export default function App() {
 }
 
 function Header({ open, currentPage }) {
+  const isPersonPage = currentPage === "personas" || personPages.some((item) => item.slug === currentPage);
   const isActive = (name) => currentPage === name;
 
   return (
@@ -133,54 +158,25 @@ function Header({ open, currentPage }) {
         </button>
 
         <nav className="hidden items-center gap-5 text-sm text-stone-300 md:flex">
-          <button onClick={() => open("home")} className={isActive("home") ? "text-white" : "hover:text-white"}>
-            Bienvenidos
-          </button>
-
-          <button onClick={() => open("arquitectura")} className={isActive("arquitectura") ? "text-white" : "hover:text-white"}>
-            Arquitectura
-          </button>
-
-          <button onClick={() => open("natura")} className={isActive("natura") ? "text-white" : "hover:text-white"}>
-            Natura
-          </button>
+          <button onClick={() => open("home")} className={isActive("home") ? "text-white" : "hover:text-white"}>Bienvenidos</button>
+          <button onClick={() => open("arquitectura")} className={isActive("arquitectura") ? "text-white" : "hover:text-white"}>Arquitectura</button>
+          <button onClick={() => open("natura")} className={isActive("natura") ? "text-white" : "hover:text-white"}>Natura</button>
 
           <div className="group relative py-3">
-            <button onClick={() => open("personas")} className={currentPage === "personas" || personPages.some((item) => item.slug === currentPage) ? "text-white" : "hover:text-white"}>
-              Personas ⌄
-            </button>
-
+            <button onClick={() => open("personas")} className={isPersonPage ? "text-white" : "hover:text-white"}>Personas ⌄</button>
             <div className="invisible absolute left-0 top-full w-64 translate-y-2 rounded-2xl border border-white/10 bg-stone-900/95 p-2 opacity-0 shadow-2xl transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
               {personPages.map((item) => (
-                <button
-                  key={item.slug}
-                  onClick={() => open(item.slug)}
-                  className="block w-full rounded-xl px-4 py-3 text-left text-sm text-stone-300 hover:bg-white/10 hover:text-white"
-                >
+                <button key={item.slug} onClick={() => open(item.slug)} className="block w-full rounded-xl px-4 py-3 text-left text-sm text-stone-300 hover:bg-white/10 hover:text-white">
                   {item.title}
                 </button>
               ))}
             </div>
           </div>
 
-          <button onClick={() => open("still-life")} className={isActive("still-life") ? "text-white" : "hover:text-white"}>
-            Still Life
-          </button>
-
-          <button onClick={() => open("clientes")} className={isActive("clientes") ? "text-white" : "hover:text-white"}>
-            Clientes
-          </button>
-
-          <button onClick={() => open("blog")} className={isActive("blog") ? "text-white" : "hover:text-white"}>
-            Blog
-          </button>
-
-          <button
-            onClick={() => open("contacto")}
-            className="rounded-full border border-white/40 px-5 py-3 font-medium text-white hover:bg-white hover:text-stone-950"
-          >
-            Contacto
-          </button>
+          <button onClick={() => open("still-life")} className={isActive("still-life") ? "text-white" : "hover:text-white"}>Still Life</button>
+          <button onClick={() => open("clientes")} className={isActive("clientes") ? "text-white" : "hover:text-white"}>Clientes</button>
+          <button onClick={() => open("blog")} className={isActive("blog") ? "text-white" : "hover:text-white"}>Blog</button>
+          <button onClick={() => open("contacto")} className="rounded-full border border-white/40 px-5 py-3 font-medium text-white hover:bg-white hover:text-stone-950">Contacto</button>
         </nav>
       </div>
     </header>
@@ -192,15 +188,8 @@ function Home() {
     <main className="relative min-h-screen overflow-hidden">
       <img src={photos.home} alt="Fotografía principal" className="absolute inset-0 h-full w-full object-cover" />
       <div className="absolute inset-0 bg-black/20" />
-
       <div className="pointer-events-none fixed left-0 right-0 top-36 z-30 flex justify-center px-6">
-        <p
-          className="max-w-5xl text-center text-3xl italic text-white/90 drop-shadow-2xl"
-          style={{
-            fontFamily: "Snell Roundhand, Apple Chancery, Segoe Script, Bradley Hand, cursive",
-            transform: "skewX(-7deg)",
-          }}
-        >
+        <p className="max-w-5xl text-center text-3xl italic text-white/90 drop-shadow-2xl" style={{ fontFamily: "Snell Roundhand, Apple Chancery, Segoe Script, Bradley Hand, cursive", transform: "skewX(-7deg)" }}>
           Fotografías con alma, hechas para guardar lo que el corazón no quiere olvidar.
         </p>
       </div>
@@ -214,14 +203,11 @@ function Personas({ open }) {
       <section className="relative min-h-[85vh] overflow-hidden">
         <img src={photos.personas} alt="Personas" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-stone-950/40 via-stone-950/35 to-stone-950" />
-
         <div className="relative mx-auto flex min-h-[85vh] max-w-7xl items-end px-6 pb-20">
           <div className="max-w-3xl">
             <p className="mb-4 text-sm uppercase tracking-[0.35em] text-stone-200">Portfolio</p>
             <h1 className="font-serif text-6xl leading-none md:text-8xl">Personas</h1>
-            <p className="mt-6 text-lg leading-8 text-stone-200">
-              Una entrada visual a cada galería de retrato: maternidad, recién nacidos, infancia, comuniones, familias y mayores.
-            </p>
+            <p className="mt-6 text-lg leading-8 text-stone-200">Una entrada visual a cada galería de retrato: maternidad, recién nacidos, infancia, comuniones, familias y mayores.</p>
           </div>
         </div>
       </section>
@@ -232,24 +218,13 @@ function Personas({ open }) {
             <p className="mb-3 text-sm uppercase tracking-[0.35em] text-stone-500">Galerías</p>
             <h2 className="font-serif text-4xl md:text-6xl">Elige una historia</h2>
           </div>
-          <p className="max-w-xl text-stone-400">
-            Cada tarjeta funcionará como acceso a una galería independiente.
-          </p>
+          <p className="max-w-xl text-stone-400">Cada tarjeta funciona como acceso a una galería independiente.</p>
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {personPages.map((item) => (
-            <button
-              key={item.slug}
-              type="button"
-              onClick={() => open(item.slug)}
-              className="group relative min-h-[430px] overflow-hidden rounded-3xl border border-white/10 bg-stone-900 text-left"
-            >
-              <img
-                src={item.image}
-                alt={item.title}
-                className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
-              />
+            <button key={item.slug} type="button" onClick={() => open(item.slug)} className="group relative min-h-[430px] overflow-hidden rounded-3xl border border-white/10 bg-stone-900 text-left">
+              <img src={item.image} alt={item.title} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-7">
                 <p className="mb-3 text-xs uppercase tracking-[0.3em] text-stone-300">Personas</p>
@@ -270,12 +245,9 @@ function Portfolio({ item }) {
       <section className="relative min-h-screen overflow-hidden">
         <img src={item.image} alt={item.title} className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-stone-950/90 via-stone-950/60 to-stone-950/15" />
-
         <div className="relative mx-auto flex min-h-screen max-w-7xl items-center px-6 py-28">
           <div className="max-w-4xl">
-            <p className="mb-5 inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm text-stone-200">
-              Portfolio / {item.title}
-            </p>
+            <p className="mb-5 inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm text-stone-200">Portfolio / {item.title}</p>
             <h1 className="font-serif text-5xl leading-none md:text-8xl">{item.title}</h1>
             <p className="mt-7 max-w-2xl text-lg leading-8 text-stone-200">{item.description}</p>
           </div>
@@ -287,17 +259,100 @@ function Portfolio({ item }) {
           <p className="mb-3 text-sm uppercase tracking-[0.35em] text-stone-500">Galería</p>
           <h2 className="font-serif text-4xl md:text-6xl">Selección de trabajos</h2>
         </div>
-
         <div className="grid gap-5 md:grid-cols-3">
           {[1, 2, 3, 4, 5, 6].map((number) => (
-            <img
-              key={number}
-              src={item.image}
-              alt={`${item.title} ${number}`}
-              className="aspect-[4/5] rounded-[1.5rem] object-cover"
-            />
+            <img key={number} src={item.image} alt={`${item.title} ${number}`} className="aspect-[4/5] rounded-[1.5rem] object-cover" />
           ))}
         </div>
+      </section>
+    </main>
+  );
+}
+
+function Clients() {
+  const [selectedSlug, setSelectedSlug] = useState(clientGalleries[0]?.slug || "");
+  const [password, setPassword] = useState("");
+  const [unlocked, setUnlocked] = useState({});
+  const [error, setError] = useState("");
+
+  const selectedGallery = clientGalleries.find((gallery) => gallery.slug === selectedSlug) || clientGalleries[0];
+  const isUnlocked = Boolean(selectedGallery && unlocked[selectedGallery.slug]);
+
+  function submitPassword(event) {
+    event.preventDefault();
+    if (!selectedGallery) return;
+
+    if (password.trim() === selectedGallery.password) {
+      setUnlocked((current) => ({ ...current, [selectedGallery.slug]: true }));
+      setPassword("");
+      setError("");
+    } else {
+      setError("Contraseña incorrecta. Revisa la clave de tu galería.");
+    }
+  }
+
+  return (
+    <main className="bg-stone-100 text-stone-950">
+      <section className="relative min-h-[85vh] overflow-hidden bg-stone-950 text-white">
+        <img src={photos.clientes} alt="Clientes" className="absolute inset-0 h-full w-full object-cover opacity-50" />
+        <div className="absolute inset-0 bg-gradient-to-b from-stone-950/40 via-stone-950/50 to-stone-950" />
+        <div className="relative mx-auto flex min-h-[85vh] max-w-7xl items-end px-6 pb-20">
+          <div className="max-w-3xl">
+            <p className="mb-4 text-sm uppercase tracking-[0.35em] text-stone-300">Clientes</p>
+            <h1 className="font-serif text-6xl leading-none md:text-8xl">Galerías privadas</h1>
+            <p className="mt-6 text-lg leading-8 text-stone-200">Selecciona tu galería e introduce la contraseña para ver tus fotografías.</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-6 py-20">
+        <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <div>
+            <p className="mb-3 text-sm uppercase tracking-[0.35em] text-stone-500">Acceso privado</p>
+            <h2 className="font-serif text-4xl md:text-6xl">Elige tu galería</h2>
+          </div>
+          <p className="max-w-xl text-stone-600">Esta estructura permite crear múltiples galerías privadas, cada una con su propia contraseña.</p>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {clientGalleries.map((gallery) => (
+            <button key={gallery.slug} type="button" onClick={() => { setSelectedSlug(gallery.slug); setPassword(""); setError(""); }} className={`group relative min-h-[360px] overflow-hidden rounded-3xl text-left shadow-sm ${selectedSlug === gallery.slug ? "ring-4 ring-stone-950" : ""}`}>
+              <img src={gallery.cover} alt={gallery.title} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-7 text-white">
+                <p className="mb-3 inline-flex rounded-full bg-white/15 px-3 py-1 text-xs uppercase tracking-[0.2em]">Privada</p>
+                <h3 className="font-serif text-4xl">{gallery.title}</h3>
+                <p className="mt-2 text-sm text-stone-200">{gallery.clientName}</p>
+              </div>
+            </button>
+          ))}
+        </div>
+
+        {selectedGallery && !isUnlocked && (
+          <form onSubmit={submitPassword} className="mx-auto mt-12 max-w-xl rounded-3xl bg-white p-7 shadow-sm">
+            <h2 className="font-serif text-3xl">Acceso a {selectedGallery.title}</h2>
+            <p className="mt-2 text-sm text-stone-600">Introduce la contraseña de tu galería privada.</p>
+            <input value={password} onChange={(event) => setPassword(event.target.value)} type="password" placeholder="Contraseña" className="mt-5 w-full rounded-2xl border border-stone-300 px-4 py-3 text-stone-950 outline-none focus:border-stone-950" />
+            {error && <p className="mt-4 rounded-2xl bg-red-50 p-4 text-sm text-red-700">{error}</p>}
+            <button type="submit" className="mt-5 rounded-full bg-stone-950 px-7 py-4 text-sm font-medium text-white hover:bg-stone-800">Entrar</button>
+            <p className="mt-4 text-xs text-stone-500">Demo: {selectedGallery.password}</p>
+          </form>
+        )}
+
+        {selectedGallery && isUnlocked && (
+          <section className="mt-12">
+            <div className="mb-8">
+              <p className="mb-2 text-sm uppercase tracking-[0.35em] text-stone-500">Galería desbloqueada</p>
+              <h2 className="font-serif text-5xl">{selectedGallery.title}</h2>
+              <p className="mt-3 max-w-2xl text-stone-600">{selectedGallery.description}</p>
+            </div>
+            <div className="columns-1 gap-5 md:columns-2 lg:columns-3">
+              {selectedGallery.images.map((image, index) => (
+                <img key={`${selectedGallery.slug}-${index}`} src={image} alt={`${selectedGallery.title} ${index + 1}`} className="mb-5 w-full break-inside-avoid rounded-3xl object-cover" />
+              ))}
+            </div>
+          </section>
+        )}
       </section>
     </main>
   );
@@ -309,13 +364,11 @@ function Blog() {
       <section className="mx-auto max-w-7xl">
         <p className="mb-3 text-sm uppercase tracking-[0.35em] text-stone-500">Blog</p>
         <h1 className="max-w-4xl font-serif text-6xl">Notas, historias y procesos fotográficos.</h1>
-
         <div className="mt-12 grid gap-6 md:grid-cols-2">
           <article className="rounded-[2rem] bg-white p-8">
             <h2 className="font-serif text-4xl">Fotografías con alma</h2>
             <p className="mt-4 text-stone-600">La fotografía como forma de guardar memoria, emoción y belleza.</p>
           </article>
-
           <article className="rounded-[2rem] bg-white p-8">
             <h2 className="font-serif text-4xl">La luz de una sesión tranquila</h2>
             <p className="mt-4 text-stone-600">Una sesión fotográfica también puede ser un espacio sereno y cercano.</p>
@@ -333,20 +386,13 @@ function Contact() {
         <div>
           <p className="mb-3 text-sm uppercase tracking-[0.35em] text-stone-400">Contacto</p>
           <h2 className="font-serif text-5xl">Regala momentos. Regala fotografía.</h2>
-          <p className="mt-6 text-lg leading-8 text-stone-300">
-            Puedes contactar conmigo para cualquier consulta, ya sea sobre servicios, impresiones, formación u otros encargos.
-          </p>
-          <a href={`mailto:${email}`} className="mt-10 inline-flex rounded-full bg-white px-5 py-3 text-sm font-medium text-stone-950">
-            {email}
-          </a>
+          <p className="mt-6 text-lg leading-8 text-stone-300">Puedes contactar conmigo para cualquier consulta, ya sea sobre servicios, impresiones, formación u otros encargos.</p>
+          <a href={`mailto:${email}`} className="mt-10 inline-flex rounded-full bg-white px-5 py-3 text-sm font-medium text-stone-950">{email}</a>
         </div>
-
         <form className="rounded-[2rem] bg-white p-8 text-stone-950">
           <input placeholder="Nombre" className="w-full rounded-2xl border px-4 py-3" />
           <textarea placeholder="Mensaje" rows="5" className="mt-5 w-full rounded-2xl border px-4 py-3" />
-          <a href={`mailto:${email}`} className="mt-6 inline-flex rounded-full bg-stone-950 px-7 py-4 text-sm font-medium text-white">
-            Enviar mensaje
-          </a>
+          <a href={`mailto:${email}`} className="mt-6 inline-flex rounded-full bg-stone-950 px-7 py-4 text-sm font-medium text-white">Enviar mensaje</a>
         </form>
       </section>
     </main>
@@ -359,9 +405,7 @@ function Admin() {
       <section className="mx-auto max-w-5xl rounded-[2rem] bg-white p-8">
         <p className="mb-3 text-sm uppercase tracking-[0.35em] text-stone-500">Admin</p>
         <h1 className="font-serif text-5xl">Panel de edición</h1>
-        <p className="mt-6 text-stone-600">
-          Esta versión ya está preparada para publicarse. Para guardar cambios online hará falta conectar un CMS o almacenamiento de imágenes.
-        </p>
+        <p className="mt-6 text-stone-600">Esta versión ya está preparada para publicarse. Para añadir clientes reales después conectaremos almacenamiento o un CMS.</p>
       </section>
     </main>
   );
@@ -373,20 +417,11 @@ function Footer({ open }) {
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 md:flex-row">
         <p className="font-serif text-2xl">Lucía Gámez</p>
         <p className="text-sm text-stone-500">© Lucía Gámez Photo · Proyectos Fotográficos</p>
-
         <div className="flex flex-wrap gap-3">
-          <a href="https://www.instagram.com/luzzmar/" className="rounded-full border border-white/10 px-4 py-3 text-sm text-stone-300 hover:bg-white hover:text-stone-950">
-            Instagram
-          </a>
-          <a href="https://www.facebook.com/Luzzzmar/" className="rounded-full border border-white/10 px-4 py-3 text-sm text-stone-300 hover:bg-white hover:text-stone-950">
-            Facebook
-          </a>
-          <a href="https://1x.com/luciagamez" className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 text-sm font-semibold text-stone-300 hover:bg-white hover:text-stone-950">
-            1×
-          </a>
-          <button onClick={() => open("admin")} className="rounded-full border border-white/10 px-4 py-3 text-sm text-stone-300 hover:bg-white hover:text-stone-950">
-            Admin
-          </button>
+          <a href="https://www.instagram.com/luzzmar/" className="rounded-full border border-white/10 px-4 py-3 text-sm text-stone-300 hover:bg-white hover:text-stone-950">Instagram</a>
+          <a href="https://www.facebook.com/Luzzzmar/" className="rounded-full border border-white/10 px-4 py-3 text-sm text-stone-300 hover:bg-white hover:text-stone-950">Facebook</a>
+          <a href="https://1x.com/luciagamez" className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 text-sm font-semibold text-stone-300 hover:bg-white hover:text-stone-950">1×</a>
+          <button onClick={() => open("admin")} className="rounded-full border border-white/10 px-4 py-3 text-sm text-stone-300 hover:bg-white hover:text-stone-950">Admin</button>
         </div>
       </div>
     </footer>
@@ -396,12 +431,9 @@ function Footer({ open }) {
 function runTests() {
   console.assert(logo === "/logo-original.webp.png", "El logo debe cargarse desde public/logo-original.webp.png");
   console.assert(personPages.length === 6, "Personas debe tener 6 subcategorías.");
-  console.assert(personPages.some((item) => item.slug === "dulce-espera"), "Debe existir Dulce espera.");
-  console.assert(personPages.some((item) => item.slug === "new-born"), "Debe existir New Born.");
-  console.assert(personPages.some((item) => item.slug === "ninos"), "Debe existir Niños.");
-  console.assert(personPages.some((item) => item.slug === "comuniones"), "Debe existir Comuniones.");
-  console.assert(personPages.some((item) => item.slug === "familias"), "Debe existir Familias.");
-  console.assert(personPages.some((item) => item.slug === "mayores"), "Debe existir Mayores.");
+  console.assert(clientGalleries.length >= 2, "Debe haber varias galerías privadas de clientes.");
+  console.assert(clientGalleries.every((gallery) => gallery.password), "Cada galería privada debe tener contraseña.");
+  console.assert(!document.documentElement.innerHTML.includes("Reservar sesión"), "No debe aparecer Reservar sesión.");
 }
 
 if (typeof window !== "undefined") runTests();
