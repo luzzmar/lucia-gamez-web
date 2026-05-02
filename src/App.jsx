@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 
 const email = "luzzmar@gmail.com";
@@ -170,8 +169,8 @@ export default function App() {
       {page !== "home" && <Header open={open} currentPage={page} />}      {page === "home" && <Home open={open} />}
       {page === "portfolio" && <PortfolioHome open={open} />}
       {page !== "home" && page === "personas" && <Personas open={open} />}
-      {mainPage && <Portfolio key={mainPage.slug} item={mainPage} />}
-      {personPage && <Portfolio key={personPage.slug} item={personPage} />}
+      {mainPage && <Portfolio key={mainPage.slug} item={mainPage} open={open} />}
+      {personPage && <Portfolio key={personPage.slug} item={personPage} open={open} />}
       {page === "clientes" && <Clients />}
       {page === "blog" && <Blog />}
       {page === "contacto" && <Contact />}
@@ -366,7 +365,7 @@ function getPortfolioImages(item) {
   return galleries[item.slug] || [item.image];
 }
 
-function Portfolio({ item }) {
+function Portfolio({ item, open }) {
   const galleryImages = getPortfolioImages(item);
   const [activeIndex, setActiveIndex] = useState(0);
   const activeImage = galleryImages[activeIndex] || galleryImages[0];
@@ -394,7 +393,16 @@ function Portfolio({ item }) {
             <p className="mb-3 text-[11px] uppercase tracking-[0.45em] text-stone-500">Galería</p>
             <h1 className="font-serif text-5xl leading-none text-stone-950 md:text-7xl">{item.title}</h1>
           </div>
-          <p className="max-w-sm text-sm leading-6 text-stone-500">{galleryPhrases[item.slug]}</p>
+          <div className="flex flex-col gap-4 md:items-end">
+            <p className="max-w-sm text-sm leading-6 text-stone-500 md:text-right">{galleryPhrases[item.slug]}</p>
+            <button
+              type="button"
+              onClick={() => open("portfolio")}
+              className="w-fit rounded-full border border-stone-300 px-5 py-3 text-sm text-stone-600 transition hover:bg-stone-900 hover:text-white"
+            >
+              Volver al portfolio
+            </button>
+          </div>
         </div>
 
         <div className="overflow-hidden rounded-[2rem] border border-stone-200 bg-white shadow-sm">
@@ -402,7 +410,7 @@ function Portfolio({ item }) {
             <img src={activeImage} alt={`${item.title} ${activeIndex + 1}`} draggable="false" className="h-[74vh] w-full select-none object-cover transition duration-700 group-hover:scale-[1.01]" />
             <div className="absolute inset-0 bg-gradient-to-t from-stone-950/35 via-transparent to-transparent" />
             <div className="absolute bottom-6 left-6 rounded-full border border-white/25 bg-white/20 px-4 py-2 text-xs text-white backdrop-blur">
-              Pulsa la imagen para avanzar
+              Siguiente imagen
             </div>
             <button
               type="button"
@@ -781,9 +789,11 @@ function runTests() {
   console.assert(document.documentElement.innerHTML.includes("Entrar"), "La portada debe permitir entrar al portfolio sin mostrar el menú principal.");
   console.assert(document.documentElement.innerHTML.includes("Portfolio"), "La web debe tener una página intermedia de portfolio antes de entrar en una galería concreta.");
   console.assert(!document.documentElement.innerHTML.includes("Carrusel"), "Las páginas de galería no deben mostrar la palabra Carrusel.");
+  console.assert(document.documentElement.innerHTML.includes("Volver al portfolio"), "Cada galería debe permitir volver al portfolio.");
   console.assert(document.documentElement.innerHTML.includes("Email"), "El formulario de contacto debe incluir un campo Email.");
   console.assert(document.documentElement.innerHTML.includes("Enviar mensaje"), "El formulario de contacto debe tener botón de envío.");
   console.assert(!document.documentElement.innerHTML.includes("Reservar sesión"), "No debe aparecer Reservar sesión.");
 }
 
 if (typeof window !== "undefined") runTests();
+
