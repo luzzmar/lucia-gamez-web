@@ -154,10 +154,8 @@ export default function App() {
   return (
     <div className="lucia-site min-h-screen bg-stone-50 text-stone-900">
       <style>{fontStyles}</style>
-      <Header open={open} currentPage={page} />
-
-      {page === "home" && <Home />}
-      {page === "personas" && <Personas open={open} />}
+      {page !== "home" && <Header open={open} currentPage={page} />}      {page === "home" && <Home open={open} />}
+      {page !== "home" && page === "personas" && <Personas open={open} />}
       {mainPage && <Portfolio key={mainPage.slug} item={mainPage} />}
       {personPage && <Portfolio key={personPage.slug} item={personPage} />}
       {page === "clientes" && <Clients />}
@@ -165,7 +163,7 @@ export default function App() {
       {page === "contacto" && <Contact />}
       {page === "admin" && <Admin />}
 
-      <Footer open={open} />
+      {page !== "home" && <Footer open={open} />}
     </div>
   );
 }
@@ -220,36 +218,29 @@ function Header({ open, currentPage }) {
   );
 }
 
-function Home() {
+function Home({ open }) {
   return (
-    <main className="bg-stone-50 text-stone-900">
-      <div className="pointer-events-none fixed left-0 right-0 top-36 z-40 px-6 md:top-40">
-        <div className="mx-auto max-w-7xl">
-          <div className="inline-block rounded-[1.5rem] border border-white/60 bg-stone-50/75 px-6 py-5 shadow-sm backdrop-blur-md md:px-8 md:py-6">
-            <p className="mb-3 text-[11px] uppercase tracking-[0.5em] text-stone-500">Bienvenidos</p>
-            <h1 className="whitespace-nowrap font-serif text-4xl leading-none text-stone-950 md:text-7xl lg:text-8xl">
-              Fotografías con alma.
-            </h1>
-          </div>
-        </div>
+    <main className="relative min-h-screen overflow-hidden bg-stone-950 text-white">
+      <img src={photos.home} alt="Fotografía principal" className="absolute inset-0 h-full w-full object-cover" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/10 to-black/35" />
+
+      <div className="absolute left-6 top-6 z-20 md:left-10 md:top-8">
+        <img src={logo} alt="Lucía Gámez Photo" className="h-24 w-64 object-contain object-left md:h-28 md:w-80" />
       </div>
 
-      <section className="relative min-h-screen overflow-hidden">
-        <img src={photos.home} alt="Fotografía principal" className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-b from-stone-50/20 via-stone-950/10 to-stone-50" />
-      </section>
-
-      <section className="mx-auto max-w-6xl px-6 py-24">
-        <div className="rounded-[2rem] border border-stone-200 bg-white p-8 shadow-sm md:p-12">
-          <p className="whitespace-nowrap font-serif text-2xl leading-tight text-stone-950 md:text-5xl">
-            Imágenes nacidas de una forma pausada de mirar.
-          </p>
-
-          <div className="mt-8 space-y-4 text-base leading-8 text-stone-600 md:text-lg">
-            <p className="md:whitespace-nowrap">Me gusta observar la luz, los silencios y los gestos pequeños.</p>
-            <p className="md:whitespace-nowrap">Busco fotografías honestas, sensibles y atemporales.</p>
-            <p className="md:whitespace-nowrap">Imágenes que guarden memoria, emoción y presencia.</p>
-          </div>
+      <section className="relative z-10 flex min-h-screen items-end px-6 pb-16 md:px-10 md:pb-20">
+        <div className="max-w-7xl">
+          <p className="mb-4 text-[11px] uppercase tracking-[0.55em] text-white/80">Bienvenidos</p>
+          <h1 className="whitespace-nowrap font-serif text-4xl leading-none text-white drop-shadow-md md:text-7xl lg:text-8xl">
+            Fotografías con alma.
+          </h1>
+          <button
+            type="button"
+            onClick={() => open("arquitectura")}
+            className="mt-8 rounded-full border border-white/40 bg-white/15 px-6 py-3 text-sm font-light tracking-wide text-white backdrop-blur transition hover:bg-white hover:text-stone-950"
+          >
+            Entrar
+          </button>
         </div>
       </section>
     </main>
@@ -655,6 +646,7 @@ function runTests() {
   console.assert(clientGalleries.every((gallery) => gallery.images[0] === gallery.cover), "La primera foto de cada carrusel debe ser la portada de su galería.");
   console.assert(clientGalleries.every((gallery) => normalizeAccess(gallery.clientName).length > 0), "Cada cliente debe poder identificarse con un nombre válido.");
   console.assert(document.documentElement.innerHTML.includes("Fotografías con alma."), "La portada debe mostrar Fotografías con alma.");
+  console.assert(document.documentElement.innerHTML.includes("Entrar"), "La portada debe permitir entrar al portfolio sin mostrar el menú principal.");
   console.assert(!document.documentElement.innerHTML.includes("Reservar sesión"), "No debe aparecer Reservar sesión.");
 }
 
