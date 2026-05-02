@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 
 const email = "luzzmar@gmail.com";
@@ -102,6 +103,18 @@ const personPages = [
     image: photos.mayores,
   },
 ];
+
+const galleryPhrases = {
+  arquitectura: "La belleza de los espacios que permanecen.",
+  natura: "La calma de lo que no necesita hablar.",
+  "still-life": "La quietud también tiene voz.",
+  "dulce-espera": "Un tiempo suspendido antes de conocerse.",
+  "new-born": "Los primeros días. La vida en voz baja.",
+  ninos: "La infancia como un lugar lleno de verdad.",
+  comuniones: "Un recuerdo luminoso, sencillo y cuidado.",
+  familias: "Vínculos que se guardan con el corazón.",
+  mayores: "Rostros que guardan historia.",
+};
 
 const clientGalleries = [
   {
@@ -243,7 +256,7 @@ function Home({ open }) {
             Fotografías con alma.
           </h1>
           <p className="mt-6 max-w-2xl text-sm font-light leading-7 tracking-wide text-white/80 md:text-base">
-            Una forma pausada de mirar.
+            Miro despacio para guardar lo que a veces pasa sin hacer ruido.
           </p>
           <button
             type="button"
@@ -265,9 +278,19 @@ function PortfolioHome({ open }) {
     <main className="bg-stone-50 text-stone-900">
       <section className="mx-auto max-w-7xl px-6 py-24">
         <p className="mb-3 text-[11px] uppercase tracking-[0.45em] text-stone-500">Portfolio</p>
-        <h1 className="font-serif text-5xl leading-none text-stone-950 md:text-7xl">Elige una galería.</h1>
+        <h1 className="font-serif text-5xl leading-none text-stone-950 md:text-7xl">Elige una historia.</h1>
 
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 rounded-[2rem] border border-stone-200 bg-white p-8 shadow-sm md:p-10">
+          <p className="mb-4 text-[11px] uppercase tracking-[0.45em] text-stone-500">Mi mirada</p>
+          <div className="space-y-3 text-base leading-8 text-stone-600 md:text-lg">
+            <p>No busco fotografías perfectas.</p>
+            <p>Busco imágenes que respiren.</p>
+            <p>La luz que entra despacio. Un gesto pequeño. Una pausa.</p>
+            <p>Fotografiar, para mí, es mirar con cuidado.</p>
+          </div>
+        </div>
+
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {portfolioItems.map((item) => (
             <button
               key={item.slug}
@@ -280,6 +303,7 @@ function PortfolioHome({ open }) {
               <div className="absolute inset-x-0 bottom-0 p-7">
                 <p className="mb-3 text-[11px] uppercase tracking-[0.42em] text-stone-200">Galería</p>
                 <h2 className="font-serif text-4xl text-white">{item.title}</h2>
+                <p className="mt-3 max-w-xs text-sm leading-6 text-stone-200">{galleryPhrases[item.slug]}</p>
               </div>
             </button>
           ))}
@@ -370,7 +394,7 @@ function Portfolio({ item }) {
             <p className="mb-3 text-[11px] uppercase tracking-[0.45em] text-stone-500">Galería</p>
             <h1 className="font-serif text-5xl leading-none text-stone-950 md:text-7xl">{item.title}</h1>
           </div>
-          <p className="text-sm text-stone-400">{activeIndex + 1} / {galleryImages.length}</p>
+          <p className="max-w-sm text-sm leading-6 text-stone-500">{galleryPhrases[item.slug]}</p>
         </div>
 
         <div className="overflow-hidden rounded-[2rem] border border-stone-200 bg-white shadow-sm">
@@ -483,7 +507,7 @@ function Clients() {
           <div className="max-w-4xl">
             <p className="mb-4 text-[11px] uppercase tracking-[0.5em] text-white">Área privada</p>
             <h1 className="font-serif text-5xl leading-none text-white md:text-7xl lg:text-8xl">Accede a tu galería.</h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-white/85">Nombre y contraseña.</p>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-white/85">Entra con los datos que te he enviado.</p>
           </div>
         </div>
       </section>
@@ -495,14 +519,14 @@ function Clients() {
           <div className="absolute inset-x-0 bottom-0 p-8">
             <p className="mb-3 text-[11px] uppercase tracking-[0.45em] text-stone-100">Clientes</p>
             <h2 className="font-serif text-4xl text-white md:text-5xl">Un acceso sencillo.</h2>
-            <p className="mt-4 max-w-md text-sm leading-6 text-stone-200">Acceso privado.</p>
+            <p className="mt-4 max-w-md text-sm leading-6 text-stone-200">Una galería privada para mirar con calma.</p>
           </div>
         </div>
 
         <div className="rounded-[2rem] border border-stone-200 bg-white p-8 shadow-sm md:p-10">
           <p className="mb-3 text-[11px] uppercase tracking-[0.45em] text-stone-500">Acceso clientes</p>
           <h2 className="font-serif text-4xl text-stone-950 md:text-6xl">Galería privada</h2>
-          <p className="mt-5 max-w-xl text-stone-500">Nombre y contraseña.</p>
+          <p className="mt-5 max-w-xl text-stone-500">Entra con los datos que te he enviado.</p>
 
           <form onSubmit={submitPrivateAccess} className="mt-8 space-y-5">
             <label className="block">
@@ -534,7 +558,7 @@ function Clients() {
             </button>
           </form>
 
-          <p className="mt-6 text-xs leading-6 text-stone-400">Sólo visualización.</p>
+          <p className="mt-6 text-xs leading-6 text-stone-400">Para mirar con calma.</p>
         </div>
       </section>
 
@@ -544,7 +568,7 @@ function Clients() {
             <div>
               <p className="mb-3 text-[11px] uppercase tracking-[0.45em] text-stone-500">Galería privada</p>
               <h2 className="font-serif text-4xl text-stone-950 md:text-6xl">{accessGranted.title}</h2>
-              <p className="mt-4 max-w-2xl text-stone-500">Sólo visualización.</p>
+              <p className="mt-4 max-w-2xl text-stone-500">Para mirar con calma.</p>
             </div>
             <button type="button" onClick={closeAccess} className="rounded-full border border-stone-300 px-5 py-3 text-sm text-stone-700 hover:bg-stone-900 hover:text-white">
               Cerrar galería
@@ -605,13 +629,19 @@ function Blog() {
     <main className="bg-stone-50 px-6 py-24 text-stone-950">
       <section className="mx-auto max-w-7xl">
         <p className="mb-3 text-[11px] uppercase tracking-[0.45em] text-stone-500">Blog</p>
-        <h1 className="max-w-4xl font-serif text-6xl">Notas.</h1>
-        <div className="mt-12 grid gap-6 md:grid-cols-2">
+        <h1 className="max-w-4xl font-serif text-6xl">Notas sobre la luz.</h1>
+        <div className="mt-12 grid gap-6 md:grid-cols-3">
           <article className="rounded-[2rem] border border-stone-200 bg-white p-8 shadow-sm">
-            <h2 className="font-serif text-4xl">Fotografías con alma</h2>
+            <h2 className="font-serif text-4xl">Lo que una imagen guarda</h2>
+            <p className="mt-5 text-sm leading-7 text-stone-500">Hay fotografías que no explican. Sólo permanecen.</p>
           </article>
           <article className="rounded-[2rem] border border-stone-200 bg-white p-8 shadow-sm">
-            <h2 className="font-serif text-4xl">Luz tranquila</h2>
+            <h2 className="font-serif text-4xl">Fotografiar sin prisa</h2>
+            <p className="mt-5 text-sm leading-7 text-stone-500">La calma también forma parte de la imagen.</p>
+          </article>
+          <article className="rounded-[2rem] border border-stone-200 bg-white p-8 shadow-sm">
+            <h2 className="font-serif text-4xl">La belleza de lo cotidiano</h2>
+            <p className="mt-5 text-sm leading-7 text-stone-500">A veces lo importante sucede muy bajo, casi sin ruido.</p>
           </article>
         </div>
       </section>
@@ -714,7 +744,7 @@ function Footer({ open }) {
         <div>
           <p className="font-serif text-4xl leading-none text-stone-950 md:text-5xl">Lucía Gámez Photo</p>
           <p className="mt-5 max-w-xl text-sm leading-7 text-stone-500 md:text-base">
-            Fotografías con alma. Una forma pausada de mirar.
+            Fotografías con alma. Miro despacio para guardar lo que a veces pasa sin hacer ruido.
           </p>
         </div>
 
@@ -745,7 +775,9 @@ function runTests() {
   console.assert(clientGalleries.every((gallery) => gallery.images[0] === gallery.cover), "La primera foto de cada carrusel debe ser la portada de su galería.");
   console.assert(clientGalleries.every((gallery) => normalizeAccess(gallery.clientName).length > 0), "Cada cliente debe poder identificarse con un nombre válido.");
   console.assert(document.documentElement.innerHTML.includes("Fotografías con alma."), "La portada debe mostrar Fotografías con alma.");
-  console.assert(document.documentElement.innerHTML.includes("Una forma pausada de mirar."), "La portada debe incluir una frase breve sobre la mirada fotográfica.");
+  console.assert(document.documentElement.innerHTML.includes("Miro despacio para guardar lo que a veces pasa sin hacer ruido."), "La portada debe incluir una frase breve sobre la mirada fotográfica.");
+  console.assert(document.documentElement.innerHTML.includes("Mi mirada"), "La página de portfolio debe incluir un bloque Mi mirada.");
+  console.assert(galleryPhrases.arquitectura.length > 0, "Cada galería debe poder mostrar una frase humanizada.");
   console.assert(document.documentElement.innerHTML.includes("Entrar"), "La portada debe permitir entrar al portfolio sin mostrar el menú principal.");
   console.assert(document.documentElement.innerHTML.includes("Portfolio"), "La web debe tener una página intermedia de portfolio antes de entrar en una galería concreta.");
   console.assert(!document.documentElement.innerHTML.includes("Carrusel"), "Las páginas de galería no deben mostrar la palabra Carrusel.");
@@ -755,4 +787,3 @@ function runTests() {
 }
 
 if (typeof window !== "undefined") runTests();
-
