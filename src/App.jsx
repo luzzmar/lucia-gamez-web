@@ -186,8 +186,9 @@ function Header({ open, currentPage }) {
     { slug: "still-life", label: "Still Life", active: isActive("still-life") },
     { slug: "clientes", label: "Clientes", active: isActive("clientes") },
     { slug: "blog", label: "Blog", active: isActive("blog") },
-    { slug: "contacto", label: "Contacto", active: isActive("contacto") },
   ];
+
+  console.assert(!menuItems.some((item) => item.slug === "contacto"), "Contacto no debe aparecer en el menú superior.");
 
   return (
     <header className="sticky top-0 z-50 border-b border-stone-200 bg-stone-50/90 backdrop-blur">
@@ -754,3 +755,4 @@ function runTests() {
 }
 
 if (typeof window !== "undefined") runTests();
+
