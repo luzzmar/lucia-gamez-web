@@ -796,4 +796,3 @@ function runTests() {
 }
 
 if (typeof window !== "undefined") runTests();
-
