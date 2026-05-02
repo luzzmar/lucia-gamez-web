@@ -206,14 +206,36 @@ function Header({ open, currentPage }) {
 
 function Home() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-stone-50">
-      <img src={photos.home} alt="Fotografía principal" className="absolute inset-0 h-full w-full object-cover" />
-      <div className="absolute inset-0 bg-gradient-to-b from-stone-50/20 via-white/5 to-stone-50/35" />
-      <div className="pointer-events-none fixed left-0 right-0 top-36 z-30 flex justify-center px-6">
-        <p className="max-w-5xl text-center text-3xl italic text-stone-950/90 drop-shadow-md" style={{ fontFamily: "Snell Roundhand, Apple Chancery, Segoe Script, Bradley Hand, cursive", transform: "skewX(-7deg)" }}>
-          Fotografías con alma.
-        </p>
-      </div>
+    <main className="bg-stone-50 text-stone-900">
+      <section className="relative min-h-screen overflow-hidden">
+        <img src={photos.home} alt="Fotografía principal" className="absolute inset-0 h-full w-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-b from-stone-50/20 via-stone-950/10 to-stone-50" />
+
+        <div className="relative mx-auto flex min-h-screen max-w-7xl items-end px-6 pb-24">
+          <div className="max-w-4xl">
+            <p className="mb-5 text-xs uppercase tracking-[0.45em] text-white/85">Bienvenidos</p>
+            <h1 className="font-serif text-5xl leading-none text-white drop-shadow-md md:text-7xl lg:text-8xl">
+              Fotografías con alma.
+            </h1>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-5xl px-6 py-24">
+        <div className="rounded-[2rem] border border-stone-200 bg-white p-8 shadow-sm md:p-12">
+          <p className="font-serif text-3xl leading-tight text-stone-950 md:text-5xl">
+            Imágenes nacidas de una forma pausada de mirar.
+          </p>
+          <div className="mt-8 grid gap-8 text-base leading-8 text-stone-600 md:grid-cols-2">
+            <p>
+              Me gusta observar la luz, los silencios, los gestos pequeños y aquello que a veces pasa desapercibido.
+            </p>
+            <p>
+              Busco fotografías honestas, sensibles y atemporales; imágenes que guarden memoria, emoción y presencia.
+            </p>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
