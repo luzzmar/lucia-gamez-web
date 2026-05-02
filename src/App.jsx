@@ -363,29 +363,21 @@ function Portfolio({ item }) {
 
   return (
     <main className="bg-stone-50 text-stone-900">
-      <section className="relative min-h-screen overflow-hidden">
-        <img src={item.image} alt={item.title} className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-stone-950/45 via-stone-950/18 to-stone-50/15" />
-        <div className="relative mx-auto flex min-h-screen max-w-7xl items-center px-6 py-28">
-          <div className="max-w-4xl">
-            <p className="mb-5 inline-flex rounded-full border border-white/40 bg-white/20 px-4 py-2 text-[11px] uppercase tracking-[0.35em] text-white backdrop-blur">Portfolio</p>
-            <h1 className="font-serif text-5xl leading-none text-white md:text-8xl">{item.title}</h1>
+      <section className="mx-auto max-w-7xl px-6 py-12 md:py-16">
+        <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+          <div>
+            <p className="mb-3 text-[11px] uppercase tracking-[0.45em] text-stone-500">Galería</p>
+            <h1 className="font-serif text-5xl leading-none text-stone-950 md:text-7xl">{item.title}</h1>
           </div>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-6 py-24">
-        <div className="mb-10">
-          <p className="mb-3 text-[11px] uppercase tracking-[0.45em] text-stone-500">Galería</p>
-          <h2 className="font-serif text-4xl text-stone-950 md:text-6xl">Carrusel</h2>
+          <p className="text-sm text-stone-400">{activeIndex + 1} / {galleryImages.length}</p>
         </div>
 
         <div className="overflow-hidden rounded-[2rem] border border-stone-200 bg-white shadow-sm">
           <button type="button" onClick={goToNextImage} className="group relative block w-full text-left" aria-label="Ver siguiente fotografía">
-            <img src={activeImage} alt={`${item.title} ${activeIndex + 1}`} draggable="false" className="h-[72vh] w-full select-none object-cover transition duration-700 group-hover:scale-[1.01]" />
-            <div className="absolute inset-0 bg-gradient-to-t from-stone-950/45 via-transparent to-transparent" />
+            <img src={activeImage} alt={`${item.title} ${activeIndex + 1}`} draggable="false" className="h-[74vh] w-full select-none object-cover transition duration-700 group-hover:scale-[1.01]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-stone-950/35 via-transparent to-transparent" />
             <div className="absolute bottom-6 left-6 rounded-full border border-white/25 bg-white/20 px-4 py-2 text-xs text-white backdrop-blur">
-              {activeIndex + 1} / {galleryImages.length} · Pulsa la imagen para avanzar
+              Pulsa la imagen para avanzar
             </div>
             <button
               type="button"
@@ -698,6 +690,7 @@ function runTests() {
   console.assert(document.documentElement.innerHTML.includes("Una forma pausada de mirar."), "La portada debe incluir una frase breve sobre la mirada fotográfica.");
   console.assert(document.documentElement.innerHTML.includes("Entrar"), "La portada debe permitir entrar al portfolio sin mostrar el menú principal.");
   console.assert(document.documentElement.innerHTML.includes("Portfolio"), "La web debe tener una página intermedia de portfolio antes de entrar en una galería concreta.");
+  console.assert(!document.documentElement.innerHTML.includes("Carrusel"), "Las páginas de galería no deben mostrar la palabra Carrusel.");
   console.assert(!document.documentElement.innerHTML.includes("Reservar sesión"), "No debe aparecer Reservar sesión.");
 }
 
