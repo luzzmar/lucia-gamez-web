@@ -619,18 +619,75 @@ function Blog() {
 }
 
 function Contact() {
+  const [contactName, setContactName] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [contactMessage, setContactMessage] = useState("");
+
+  function sendContactForm(event) {
+    event.preventDefault();
+
+    const subject = encodeURIComponent(`Mensaje desde la web - ${contactName || "Contacto"}`);
+    const body = encodeURIComponent(
+      `Nombre: ${contactName}
+Email: ${contactEmail}
+
+Mensaje:
+${contactMessage}`
+    );
+
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+  }
+
   return (
     <main className="bg-stone-50 px-6 py-24 text-stone-950">
       <section className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-2">
         <div>
           <p className="mb-3 text-[11px] uppercase tracking-[0.45em] text-stone-500">Contacto</p>
           <h2 className="font-serif text-5xl">Hablemos.</h2>
-          <a href={`mailto:${email}`} className="mt-10 inline-flex rounded-full bg-stone-900 px-5 py-3 text-sm font-medium text-white hover:bg-stone-700">{email}</a>
+          <p className="mt-6 max-w-md text-sm leading-7 text-stone-500">
+            Completa el formulario y se preparará un correo dirigido a {email}.
+          </p>
         </div>
-        <form className="rounded-[2rem] border border-stone-200 bg-white p-8 text-stone-950 shadow-sm">
-          <input placeholder="Nombre" className="w-full rounded-2xl border border-stone-300 px-4 py-3 outline-none focus:border-stone-950" />
-          <textarea placeholder="Mensaje" rows="5" className="mt-5 w-full rounded-2xl border border-stone-300 px-4 py-3 outline-none focus:border-stone-950" />
-          <a href={`mailto:${email}`} className="mt-6 inline-flex rounded-full bg-stone-900 px-7 py-4 text-sm font-medium text-white hover:bg-stone-700">Enviar mensaje</a>
+
+        <form onSubmit={sendContactForm} className="rounded-[2rem] border border-stone-200 bg-white p-8 text-stone-950 shadow-sm">
+          <label className="block">
+            <span className="mb-2 block text-sm text-stone-600">Nombre</span>
+            <input
+              required
+              value={contactName}
+              onChange={(event) => setContactName(event.target.value)}
+              placeholder="Tu nombre"
+              className="w-full rounded-2xl border border-stone-300 px-4 py-3 outline-none focus:border-stone-950"
+            />
+          </label>
+
+          <label className="mt-5 block">
+            <span className="mb-2 block text-sm text-stone-600">Email</span>
+            <input
+              required
+              value={contactEmail}
+              onChange={(event) => setContactEmail(event.target.value)}
+              type="email"
+              placeholder="tu@email.com"
+              className="w-full rounded-2xl border border-stone-300 px-4 py-3 outline-none focus:border-stone-950"
+            />
+          </label>
+
+          <label className="mt-5 block">
+            <span className="mb-2 block text-sm text-stone-600">Mensaje</span>
+            <textarea
+              required
+              value={contactMessage}
+              onChange={(event) => setContactMessage(event.target.value)}
+              placeholder="Cuéntame qué necesitas"
+              rows="5"
+              className="w-full rounded-2xl border border-stone-300 px-4 py-3 outline-none focus:border-stone-950"
+            />
+          </label>
+
+          <button type="submit" className="mt-6 inline-flex rounded-full bg-stone-900 px-7 py-4 text-sm font-medium text-white hover:bg-stone-700">
+            Enviar mensaje
+          </button>
         </form>
       </section>
     </main>
@@ -691,6 +748,8 @@ function runTests() {
   console.assert(document.documentElement.innerHTML.includes("Entrar"), "La portada debe permitir entrar al portfolio sin mostrar el menú principal.");
   console.assert(document.documentElement.innerHTML.includes("Portfolio"), "La web debe tener una página intermedia de portfolio antes de entrar en una galería concreta.");
   console.assert(!document.documentElement.innerHTML.includes("Carrusel"), "Las páginas de galería no deben mostrar la palabra Carrusel.");
+  console.assert(document.documentElement.innerHTML.includes("Email"), "El formulario de contacto debe incluir un campo Email.");
+  console.assert(document.documentElement.innerHTML.includes("Enviar mensaje"), "El formulario de contacto debe tener botón de envío.");
   console.assert(!document.documentElement.innerHTML.includes("Reservar sesión"), "No debe aparecer Reservar sesión.");
 }
 
