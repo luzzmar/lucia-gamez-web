@@ -214,7 +214,7 @@ function Home() {
         <div className="relative mx-auto flex min-h-screen max-w-7xl items-end px-6 pb-24">
           <div className="max-w-4xl">
             <p className="mb-5 text-xs uppercase tracking-[0.45em] text-white/85">Bienvenidos</p>
-            <h1 className="font-serif text-5xl leading-none text-white drop-shadow-md md:text-7xl lg:text-8xl">
+            <h1 className="whitespace-nowrap font-serif text-4xl leading-none text-white drop-shadow-md md:text-7xl lg:text-8xl">
               Fotografías con alma.
             </h1>
           </div>
@@ -223,7 +223,7 @@ function Home() {
 
       <section className="mx-auto max-w-6xl px-6 py-24">
         <div className="rounded-[2rem] border border-stone-200 bg-white p-8 shadow-sm md:p-12">
-          <p className="font-serif text-3xl leading-tight text-stone-950 md:text-5xl">
+          <p className="whitespace-nowrap font-serif text-2xl leading-tight text-stone-950 md:text-5xl">
             Imágenes nacidas de una forma pausada de mirar.
           </p>
 
