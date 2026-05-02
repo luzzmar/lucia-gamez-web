@@ -182,7 +182,6 @@ function Header({ open, currentPage }) {
     { slug: "new-born", label: "New Born", active: isActive("new-born") },
     { slug: "ninos", label: "Niños", active: isActive("ninos") },
     { slug: "comuniones", label: "Comuniones", active: isActive("comuniones") },
-    { slug: "familias", label: "Familias", active: isActive("familias") },
     { slug: "mayores", label: "Mayores", active: isActive("mayores") },
     { slug: "still-life", label: "Still Life", active: isActive("still-life") },
     { slug: "clientes", label: "Clientes", active: isActive("clientes") },
@@ -647,6 +646,7 @@ function runTests() {
   console.assert(logo === "/logo-original.webp.png", "El logo debe cargarse desde public/logo-original.webp.png");
   console.assert(personPages.length === 6, "Personas debe tener 6 subcategorías.");
   console.assert(!document.documentElement.innerHTML.includes(">Personas<"), "El menú principal no debe mostrar la opción general Personas.");
+  console.assert(!document.documentElement.innerHTML.includes(">Familias<"), "El menú principal no debe mostrar la opción Familias.");
   console.assert(clientGalleries.length >= 2, "Debe haber varias galerías privadas de clientes.");
   console.assert(clientGalleries.every((gallery) => gallery.clientName && gallery.password), "Cada galería privada debe tener nombre de cliente y contraseña.");
   console.assert(new Set(clientGalleries.map((gallery) => normalizeAccess(gallery.clientName))).size === clientGalleries.length, "Cada nombre de cliente debe ser único.");
@@ -655,7 +655,7 @@ function runTests() {
   console.assert(clientGalleries.every((gallery) => gallery.images[0] === gallery.cover), "La primera foto de cada carrusel debe ser la portada de su galería.");
   console.assert(clientGalleries.every((gallery) => normalizeAccess(gallery.clientName).length > 0), "Cada cliente debe poder identificarse con un nombre válido.");
   console.assert(document.documentElement.innerHTML.includes("Fotografías con alma."), "La portada debe mostrar Fotografías con alma.");
-  console.assert(!document.documentElement.innerHTML.includes("Reservar sesión"), "No debe aparece
+  console.assert(!document.documentElement.innerHTML.includes("Reservar sesión"), "No debe aparecer Reservar sesión.");
 }
 
 if (typeof window !== "undefined") runTests();
