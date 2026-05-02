@@ -136,7 +136,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-950 text-white">
+    <div className="min-h-screen bg-stone-50 text-stone-900">
       <Header open={open} currentPage={page} />
 
       {page === "home" && <Home />}
@@ -157,33 +157,36 @@ function Header({ open, currentPage }) {
   const isPersonPage = currentPage === "personas" || personPages.some((item) => item.slug === currentPage);
   const isActive = (name) => currentPage === name;
 
+  const linkClass = (active) =>
+    active ? "text-stone-950" : "text-stone-500 transition hover:text-stone-950";
+
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-stone-950/90 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-stone-200 bg-stone-50/90 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
         <button onClick={() => open("home")} className="flex h-24 w-56 items-center md:h-28 md:w-72">
           <img src={logo} alt="Lucía Gámez Photo" className="h-full w-full object-contain object-left" />
         </button>
 
-        <nav className="hidden items-center gap-5 text-sm text-stone-300 md:flex">
-          <button onClick={() => open("home")} className={isActive("home") ? "text-white" : "hover:text-white"}>Bienvenidos</button>
-          <button onClick={() => open("arquitectura")} className={isActive("arquitectura") ? "text-white" : "hover:text-white"}>Arquitectura</button>
-          <button onClick={() => open("natura")} className={isActive("natura") ? "text-white" : "hover:text-white"}>Natura</button>
+        <nav className="hidden items-center gap-5 text-sm md:flex">
+          <button onClick={() => open("home")} className={linkClass(isActive("home"))}>Bienvenidos</button>
+          <button onClick={() => open("arquitectura")} className={linkClass(isActive("arquitectura"))}>Arquitectura</button>
+          <button onClick={() => open("natura")} className={linkClass(isActive("natura"))}>Natura</button>
 
           <div className="group relative py-3">
-            <button onClick={() => open("personas")} className={isPersonPage ? "text-white" : "hover:text-white"}>Personas ⌄</button>
-            <div className="invisible absolute left-0 top-full w-64 translate-y-2 rounded-2xl border border-white/10 bg-stone-900/95 p-2 opacity-0 shadow-2xl transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+            <button onClick={() => open("personas")} className={linkClass(isPersonPage)}>Personas ⌄</button>
+            <div className="invisible absolute left-0 top-full w-64 translate-y-2 rounded-2xl border border-stone-200 bg-white/95 p-2 opacity-0 shadow-xl shadow-stone-200/70 transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
               {personPages.map((item) => (
-                <button key={item.slug} onClick={() => open(item.slug)} className="block w-full rounded-xl px-4 py-3 text-left text-sm text-stone-300 hover:bg-white/10 hover:text-white">
+                <button key={item.slug} onClick={() => open(item.slug)} className="block w-full rounded-xl px-4 py-3 text-left text-sm text-stone-600 hover:bg-stone-100 hover:text-stone-950">
                   {item.title}
                 </button>
               ))}
             </div>
           </div>
 
-          <button onClick={() => open("still-life")} className={isActive("still-life") ? "text-white" : "hover:text-white"}>Still Life</button>
-          <button onClick={() => open("clientes")} className={isActive("clientes") ? "text-white" : "hover:text-white"}>Clientes</button>
-          <button onClick={() => open("blog")} className={isActive("blog") ? "text-white" : "hover:text-white"}>Blog</button>
-          <button onClick={() => open("contacto")} className="rounded-full border border-white/40 px-5 py-3 font-medium text-white hover:bg-white hover:text-stone-950">Contacto</button>
+          <button onClick={() => open("still-life")} className={linkClass(isActive("still-life"))}>Still Life</button>
+          <button onClick={() => open("clientes")} className={linkClass(isActive("clientes"))}>Clientes</button>
+          <button onClick={() => open("blog")} className={linkClass(isActive("blog"))}>Blog</button>
+          <button onClick={() => open("contacto")} className="rounded-full border border-stone-300 px-5 py-3 font-medium text-stone-900 transition hover:bg-stone-900 hover:text-white">Contacto</button>
         </nav>
       </div>
     </header>
@@ -192,12 +195,12 @@ function Header({ open, currentPage }) {
 
 function Home() {
   return (
-    <main className="relative min-h-screen overflow-hidden">
+    <main className="relative min-h-screen overflow-hidden bg-stone-50">
       <img src={photos.home} alt="Fotografía principal" className="absolute inset-0 h-full w-full object-cover" />
-      <div className="absolute inset-0 bg-black/20" />
+      <div className="absolute inset-0 bg-gradient-to-b from-stone-50/20 via-white/5 to-stone-50/35" />
       <div className="pointer-events-none fixed left-0 right-0 top-36 z-30 flex justify-center px-6">
-        <p className="max-w-5xl text-center text-3xl italic text-white/90 drop-shadow-2xl" style={{ fontFamily: "Snell Roundhand, Apple Chancery, Segoe Script, Bradley Hand, cursive", transform: "skewX(-7deg)" }}>
-          Fotografías con alma, hechas para guardar lo que el corazón no quiere olvidar.
+        <p className="max-w-5xl text-center text-3xl italic text-stone-950/90 drop-shadow-md" style={{ fontFamily: "Snell Roundhand, Apple Chancery, Segoe Script, Bradley Hand, cursive", transform: "skewX(-7deg)" }}>
+          Fotografías con alma.
         </p>
       </div>
     </main>
@@ -206,37 +209,32 @@ function Home() {
 
 function Personas({ open }) {
   return (
-    <main className="bg-stone-950 text-white">
+    <main className="bg-stone-50 text-stone-900">
       <section className="relative min-h-[85vh] overflow-hidden">
         <img src={photos.personas} alt="Personas" className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-b from-stone-950/40 via-stone-950/35 to-stone-950" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/15 to-stone-50" />
         <div className="relative mx-auto flex min-h-[85vh] max-w-7xl items-end px-6 pb-20">
           <div className="max-w-3xl">
-            <p className="mb-4 text-sm uppercase tracking-[0.35em] text-stone-200">Portfolio</p>
-            <h1 className="font-serif text-6xl leading-none md:text-8xl">Personas</h1>
-            <p className="mt-6 text-lg leading-8 text-stone-200">Una entrada visual a cada galería de retrato: maternidad, recién nacidos, infancia, comuniones, familias y mayores.</p>
+            <p className="mb-4 text-sm uppercase tracking-[0.35em] text-stone-100">Portfolio</p>
+            <h1 className="font-serif text-6xl leading-none text-white md:text-8xl">Personas</h1>
           </div>
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-24">
-        <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <div>
-            <p className="mb-3 text-sm uppercase tracking-[0.35em] text-stone-500">Galerías</p>
-            <h2 className="font-serif text-4xl md:text-6xl">Elige una historia</h2>
-          </div>
-          <p className="max-w-xl text-stone-400">Cada tarjeta funciona como acceso a una galería independiente.</p>
+        <div className="mb-12">
+          <p className="mb-3 text-sm uppercase tracking-[0.35em] text-stone-500">Galerías</p>
+          <h2 className="font-serif text-4xl text-stone-950 md:text-6xl">Elige una historia</h2>
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {personPages.map((item) => (
-            <button key={item.slug} type="button" onClick={() => open(item.slug)} className="group relative min-h-[430px] overflow-hidden rounded-3xl border border-white/10 bg-stone-900 text-left">
+            <button key={item.slug} type="button" onClick={() => open(item.slug)} className="group relative min-h-[430px] overflow-hidden rounded-[1.75rem] border border-stone-200 bg-white text-left shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-stone-200/80">
               <img src={item.image} alt={item.title} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-stone-950/10 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-7">
-                <p className="mb-3 text-xs uppercase tracking-[0.3em] text-stone-300">Personas</p>
-                <h3 className="font-serif text-4xl">{item.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-stone-300">{item.subtitle}</p>
+                <p className="mb-3 text-xs uppercase tracking-[0.3em] text-stone-200">Personas</p>
+                <h3 className="font-serif text-4xl text-white">{item.title}</h3>
               </div>
             </button>
           ))}
@@ -248,15 +246,14 @@ function Personas({ open }) {
 
 function Portfolio({ item }) {
   return (
-    <main>
+    <main className="bg-stone-50 text-stone-900">
       <section className="relative min-h-screen overflow-hidden">
         <img src={item.image} alt={item.title} className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-stone-950/90 via-stone-950/60 to-stone-950/15" />
+        <div className="absolute inset-0 bg-gradient-to-r from-stone-950/45 via-stone-950/18 to-stone-50/15" />
         <div className="relative mx-auto flex min-h-screen max-w-7xl items-center px-6 py-28">
           <div className="max-w-4xl">
-            <p className="mb-5 inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm text-stone-200">Portfolio / {item.title}</p>
-            <h1 className="font-serif text-5xl leading-none md:text-8xl">{item.title}</h1>
-            <p className="mt-7 max-w-2xl text-lg leading-8 text-stone-200">{item.description}</p>
+            <p className="mb-5 inline-flex rounded-full border border-white/40 bg-white/20 px-4 py-2 text-sm text-white backdrop-blur">Portfolio</p>
+            <h1 className="font-serif text-5xl leading-none text-white md:text-8xl">{item.title}</h1>
           </div>
         </div>
       </section>
@@ -264,11 +261,11 @@ function Portfolio({ item }) {
       <section className="mx-auto max-w-7xl px-6 py-24">
         <div className="mb-10">
           <p className="mb-3 text-sm uppercase tracking-[0.35em] text-stone-500">Galería</p>
-          <h2 className="font-serif text-4xl md:text-6xl">Selección de trabajos</h2>
+          <h2 className="font-serif text-4xl text-stone-950 md:text-6xl">Selección</h2>
         </div>
         <div className="grid gap-5 md:grid-cols-3">
           {[1, 2, 3, 4, 5, 6].map((number) => (
-            <img key={number} src={item.image} alt={`${item.title} ${number}`} className="aspect-[4/5] rounded-[1.5rem] object-cover" />
+            <img key={number} src={item.image} alt={`${item.title} ${number}`} className="aspect-[4/5] rounded-[1.5rem] border border-stone-200 object-cover shadow-sm" />
           ))}
         </div>
       </section>
@@ -339,86 +336,79 @@ function Clients() {
   }
 
   return (
-    <main className="bg-stone-950 text-white">
-      <section className="relative min-h-[82vh] overflow-hidden">
+    <main className="bg-stone-50 text-stone-900">
+      <section className="relative min-h-[78vh] overflow-hidden">
         <img src={photos.clientes} alt="Clientes" className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-black/60" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/45 to-stone-950" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/5 via-stone-950/15 to-stone-50" />
 
-        <div className="relative mx-auto flex min-h-[82vh] max-w-7xl items-end px-6 pb-20">
+        <div className="relative mx-auto flex min-h-[78vh] max-w-7xl items-end px-6 pb-20">
           <div className="max-w-4xl">
-            <p className="mb-4 text-xs uppercase tracking-[0.45em] text-stone-300">Área privada</p>
-            <h1 className="font-serif text-5xl leading-none md:text-7xl lg:text-8xl">Accede a tu galería.</h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-stone-200">
-              Introduce tu nombre y contraseña para ver tu galería privada. Las fotografías son sólo para visualización.
-            </p>
+            <p className="mb-4 text-xs uppercase tracking-[0.45em] text-white">Área privada</p>
+            <h1 className="font-serif text-5xl leading-none text-white md:text-7xl lg:text-8xl">Accede a tu galería.</h1>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-white/85">Nombre y contraseña.</p>
           </div>
         </div>
       </section>
 
       <section className="mx-auto grid max-w-6xl gap-8 px-6 py-20 lg:grid-cols-[0.95fr_1.05fr] lg:items-stretch">
-        <div className="relative min-h-[520px] overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03]">
-          <img src={photos.clientes} alt="Acceso privado" className="absolute inset-0 h-full w-full object-cover opacity-80" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+        <div className="relative min-h-[520px] overflow-hidden rounded-[2rem] border border-stone-200 bg-white shadow-sm">
+          <img src={photos.clientes} alt="Acceso privado" className="absolute inset-0 h-full w-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-stone-950/65 via-stone-950/10 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 p-8">
-            <p className="mb-3 text-xs uppercase tracking-[0.4em] text-stone-300">Clientes</p>
-            <h2 className="font-serif text-4xl text-white md:text-5xl">Un acceso sencillo y discreto.</h2>
-            <p className="mt-4 max-w-md text-sm leading-6 text-stone-300">
-              Sólo quien tenga su nombre y contraseña podrá ver las fotografías de su galería.
-            </p>
+            <p className="mb-3 text-xs uppercase tracking-[0.4em] text-stone-100">Clientes</p>
+            <h2 className="font-serif text-4xl text-white md:text-5xl">Un acceso sencillo.</h2>
+            <p className="mt-4 max-w-md text-sm leading-6 text-stone-200">Acceso privado.</p>
           </div>
         </div>
 
-        <div className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 shadow-2xl shadow-black/30 backdrop-blur md:p-10">
+        <div className="rounded-[2rem] border border-stone-200 bg-white p-8 shadow-sm md:p-10">
           <p className="mb-3 text-xs uppercase tracking-[0.45em] text-stone-500">Acceso clientes</p>
-          <h2 className="font-serif text-4xl text-white md:text-6xl">Galería privada</h2>
-          <p className="mt-5 max-w-xl text-stone-400">Introduce tu nombre y la contraseña recibida.</p>
+          <h2 className="font-serif text-4xl text-stone-950 md:text-6xl">Galería privada</h2>
+          <p className="mt-5 max-w-xl text-stone-500">Nombre y contraseña.</p>
 
           <form onSubmit={submitPrivateAccess} className="mt-8 space-y-5">
             <label className="block">
-              <span className="mb-2 block text-sm text-stone-300">Nombre</span>
+              <span className="mb-2 block text-sm text-stone-600">Nombre</span>
               <input
                 value={clientName}
                 onChange={(event) => setClientName(event.target.value)}
                 type="text"
                 placeholder="Tu nombre"
-                className="w-full rounded-2xl border border-white/15 bg-black/20 px-4 py-3 text-white outline-none placeholder:text-stone-500 focus:border-white/40"
+                className="w-full rounded-2xl border border-stone-300 bg-white px-4 py-3 text-stone-900 outline-none placeholder:text-stone-400 focus:border-stone-950"
               />
             </label>
 
             <label className="block">
-              <span className="mb-2 block text-sm text-stone-300">Contraseña</span>
+              <span className="mb-2 block text-sm text-stone-600">Contraseña</span>
               <input
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 type="password"
                 placeholder="Introduce tu contraseña"
-                className="w-full rounded-2xl border border-white/15 bg-black/20 px-4 py-3 text-white outline-none placeholder:text-stone-500 focus:border-white/40"
+                className="w-full rounded-2xl border border-stone-300 bg-white px-4 py-3 text-stone-900 outline-none placeholder:text-stone-400 focus:border-stone-950"
               />
             </label>
 
-            {error && <p className="rounded-2xl bg-red-500/10 p-4 text-sm text-red-200">{error}</p>}
+            {error && <p className="rounded-2xl bg-red-50 p-4 text-sm text-red-700">{error}</p>}
 
-            <button type="submit" className="inline-flex rounded-full border border-white/20 bg-white px-7 py-3 text-sm font-medium text-stone-950 transition hover:bg-stone-200">
+            <button type="submit" className="inline-flex rounded-full border border-stone-900 bg-stone-900 px-7 py-3 text-sm font-medium text-white transition hover:bg-stone-700">
               Entrar
             </button>
           </form>
 
-          <p className="mt-6 text-xs leading-6 text-stone-500">Esta galería es sólo para ver fotografías. No hay opción para guardar archivos desde la web.</p>
+          <p className="mt-6 text-xs leading-6 text-stone-400">Sólo visualización.</p>
         </div>
       </section>
 
       {accessGranted && (
         <section className="mx-auto max-w-7xl px-6 pb-24">
-          <div className="mb-10 flex flex-col justify-between gap-6 rounded-[2rem] border border-emerald-300/20 bg-emerald-300/10 p-8 md:flex-row md:items-end">
+          <div className="mb-10 flex flex-col justify-between gap-6 rounded-[2rem] border border-stone-200 bg-white p-8 shadow-sm md:flex-row md:items-end">
             <div>
-              <p className="mb-3 text-xs uppercase tracking-[0.45em] text-emerald-200/80">Galería privada</p>
-              <h2 className="font-serif text-4xl text-white md:text-6xl">{accessGranted.title}</h2>
-              <p className="mt-4 max-w-2xl text-stone-300">
-                Galería de sólo visualización. Las fotografías se muestran únicamente para visualización.
-              </p>
+              <p className="mb-3 text-xs uppercase tracking-[0.45em] text-stone-500">Galería privada</p>
+              <h2 className="font-serif text-4xl text-stone-950 md:text-6xl">{accessGranted.title}</h2>
+              <p className="mt-4 max-w-2xl text-stone-500">Sólo visualización.</p>
             </div>
-            <button type="button" onClick={closeAccess} className="rounded-full border border-white/15 px-5 py-3 text-sm text-stone-300 hover:bg-white hover:text-stone-950">
+            <button type="button" onClick={closeAccess} className="rounded-full border border-stone-300 px-5 py-3 text-sm text-stone-700 hover:bg-stone-900 hover:text-white">
               Cerrar galería
             </button>
           </div>
@@ -429,7 +419,7 @@ function Clients() {
                 key={`${accessGranted.slug}-${index}`}
                 type="button"
                 onClick={() => setActiveImageIndex(index)}
-                className="mb-5 block w-full break-inside-avoid overflow-hidden rounded-[1.75rem] bg-white/[0.03]"
+                className="mb-5 block w-full break-inside-avoid overflow-hidden rounded-[1.75rem] border border-stone-200 bg-white shadow-sm"
                 aria-label={`Ver fotografía ${index + 1}`}
               >
                 <img
@@ -445,7 +435,7 @@ function Clients() {
       )}
 
       {activeImage && accessGranted && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4" onClick={goToNextImage}>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-stone-950/95 p-4" onClick={goToNextImage}>
           <button type="button" onClick={closeCarousel} className="absolute right-5 top-5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm text-white hover:bg-white hover:text-stone-950">
             Cerrar
           </button>
@@ -474,18 +464,16 @@ function Clients() {
 
 function Blog() {
   return (
-    <main className="bg-stone-100 px-6 py-24 text-stone-950">
+    <main className="bg-stone-50 px-6 py-24 text-stone-950">
       <section className="mx-auto max-w-7xl">
         <p className="mb-3 text-sm uppercase tracking-[0.35em] text-stone-500">Blog</p>
-        <h1 className="max-w-4xl font-serif text-6xl">Notas, historias y procesos fotográficos.</h1>
+        <h1 className="max-w-4xl font-serif text-6xl">Notas.</h1>
         <div className="mt-12 grid gap-6 md:grid-cols-2">
-          <article className="rounded-[2rem] bg-white p-8">
+          <article className="rounded-[2rem] border border-stone-200 bg-white p-8 shadow-sm">
             <h2 className="font-serif text-4xl">Fotografías con alma</h2>
-            <p className="mt-4 text-stone-600">La fotografía como forma de guardar memoria, emoción y belleza.</p>
           </article>
-          <article className="rounded-[2rem] bg-white p-8">
-            <h2 className="font-serif text-4xl">La luz de una sesión tranquila</h2>
-            <p className="mt-4 text-stone-600">Una sesión fotográfica también puede ser un espacio sereno y cercano.</p>
+          <article className="rounded-[2rem] border border-stone-200 bg-white p-8 shadow-sm">
+            <h2 className="font-serif text-4xl">Luz tranquila</h2>
           </article>
         </div>
       </section>
@@ -495,18 +483,17 @@ function Blog() {
 
 function Contact() {
   return (
-    <main className="bg-stone-900 px-6 py-24">
+    <main className="bg-stone-50 px-6 py-24 text-stone-950">
       <section className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-2">
         <div>
-          <p className="mb-3 text-sm uppercase tracking-[0.35em] text-stone-400">Contacto</p>
-          <h2 className="font-serif text-5xl">Regala momentos. Regala fotografía.</h2>
-          <p className="mt-6 text-lg leading-8 text-stone-300">Puedes contactar conmigo para cualquier consulta, ya sea sobre servicios, impresiones, formación u otros encargos.</p>
-          <a href={`mailto:${email}`} className="mt-10 inline-flex rounded-full bg-white px-5 py-3 text-sm font-medium text-stone-950">{email}</a>
+          <p className="mb-3 text-sm uppercase tracking-[0.35em] text-stone-500">Contacto</p>
+          <h2 className="font-serif text-5xl">Hablemos.</h2>
+          <a href={`mailto:${email}`} className="mt-10 inline-flex rounded-full bg-stone-900 px-5 py-3 text-sm font-medium text-white hover:bg-stone-700">{email}</a>
         </div>
-        <form className="rounded-[2rem] bg-white p-8 text-stone-950">
-          <input placeholder="Nombre" className="w-full rounded-2xl border px-4 py-3" />
-          <textarea placeholder="Mensaje" rows="5" className="mt-5 w-full rounded-2xl border px-4 py-3" />
-          <a href={`mailto:${email}`} className="mt-6 inline-flex rounded-full bg-stone-950 px-7 py-4 text-sm font-medium text-white">Enviar mensaje</a>
+        <form className="rounded-[2rem] border border-stone-200 bg-white p-8 text-stone-950 shadow-sm">
+          <input placeholder="Nombre" className="w-full rounded-2xl border border-stone-300 px-4 py-3 outline-none focus:border-stone-950" />
+          <textarea placeholder="Mensaje" rows="5" className="mt-5 w-full rounded-2xl border border-stone-300 px-4 py-3 outline-none focus:border-stone-950" />
+          <a href={`mailto:${email}`} className="mt-6 inline-flex rounded-full bg-stone-900 px-7 py-4 text-sm font-medium text-white hover:bg-stone-700">Enviar mensaje</a>
         </form>
       </section>
     </main>
@@ -515,11 +502,11 @@ function Contact() {
 
 function Admin() {
   return (
-    <main className="bg-stone-100 px-6 py-24 text-stone-950">
-      <section className="mx-auto max-w-5xl rounded-[2rem] bg-white p-8">
+    <main className="bg-stone-50 px-6 py-24 text-stone-950">
+      <section className="mx-auto max-w-5xl rounded-[2rem] border border-stone-200 bg-white p-8 shadow-sm">
         <p className="mb-3 text-sm uppercase tracking-[0.35em] text-stone-500">Admin</p>
         <h1 className="font-serif text-5xl">Panel de edición</h1>
-        <p className="mt-6 text-stone-600">Esta versión ya está preparada para publicarse. Para añadir clientes reales después conectaremos almacenamiento o un CMS.</p>
+        <p className="mt-6 text-stone-600">Panel privado.</p>
       </section>
     </main>
   );
@@ -527,15 +514,15 @@ function Admin() {
 
 function Footer({ open }) {
   return (
-    <footer className="border-t border-white/10 px-6 py-10">
+    <footer className="border-t border-stone-200 bg-stone-50 px-6 py-10">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 md:flex-row">
-        <p className="font-serif text-2xl">Lucía Gámez</p>
+        <p className="font-serif text-2xl text-stone-950">Lucía Gámez</p>
         <p className="text-sm text-stone-500">© Lucía Gámez Photo · Proyectos Fotográficos</p>
         <div className="flex flex-wrap gap-3">
-          <a href="https://www.instagram.com/luzzmar/" className="rounded-full border border-white/10 px-4 py-3 text-sm text-stone-300 hover:bg-white hover:text-stone-950">Instagram</a>
-          <a href="https://www.facebook.com/Luzzzmar/" className="rounded-full border border-white/10 px-4 py-3 text-sm text-stone-300 hover:bg-white hover:text-stone-950">Facebook</a>
-          <a href="https://1x.com/luciagamez" className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 text-sm font-semibold text-stone-300 hover:bg-white hover:text-stone-950">1×</a>
-          <button onClick={() => open("admin")} className="rounded-full border border-white/10 px-4 py-3 text-sm text-stone-300 hover:bg-white hover:text-stone-950">Admin</button>
+          <a href="https://www.instagram.com/luzzmar/" className="rounded-full border border-stone-300 px-4 py-3 text-sm text-stone-600 hover:bg-stone-900 hover:text-white">Instagram</a>
+          <a href="https://www.facebook.com/Luzzzmar/" className="rounded-full border border-stone-300 px-4 py-3 text-sm text-stone-600 hover:bg-stone-900 hover:text-white">Facebook</a>
+          <a href="https://1x.com/luciagamez" className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-stone-300 text-sm font-semibold text-stone-600 hover:bg-stone-900 hover:text-white">1×</a>
+          <button onClick={() => open("admin")} className="rounded-full border border-stone-300 px-4 py-3 text-sm text-stone-600 hover:bg-stone-900 hover:text-white">Admin</button>
         </div>
       </div>
     </footer>
