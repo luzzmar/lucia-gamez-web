@@ -543,7 +543,7 @@ function Clients() {
                 value={clientName}
                 onChange={(event) => setClientName(event.target.value)}
                 type="text"
-                placeholder="Tu nombre"
+                placeholder="Cómo te llamas"
                 className="w-full rounded-2xl border border-stone-300 bg-white px-4 py-3 text-stone-900 outline-none placeholder:text-stone-400 focus:border-stone-950"
               />
             </label>
@@ -682,9 +682,9 @@ ${contactMessage}`
       <section className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-2">
         <div>
           <p className="mb-3 text-[11px] uppercase tracking-[0.45em] text-stone-500">Contacto</p>
-          <h2 className="font-serif text-5xl">Hablemos.</h2>
+          <h2 className="font-serif text-5xl">Hablemos con calma.</h2>
           <p className="mt-6 max-w-md text-sm leading-7 text-stone-500">
-            Completa el formulario y se preparará un correo dirigido a {email}.
+            Cuéntame qué quieres guardar, qué momento te gustaría mirar despacio o qué proyecto tienes entre manos.
           </p>
         </div>
 
@@ -695,7 +695,7 @@ ${contactMessage}`
               required
               value={contactName}
               onChange={(event) => setContactName(event.target.value)}
-              placeholder="Tu nombre"
+              placeholder="Cómo te llamas"
               className="w-full rounded-2xl border border-stone-300 px-4 py-3 outline-none focus:border-stone-950"
             />
           </label>
@@ -707,7 +707,7 @@ ${contactMessage}`
               value={contactEmail}
               onChange={(event) => setContactEmail(event.target.value)}
               type="email"
-              placeholder="tu@email.com"
+              placeholder="Dónde puedo responderte"
               className="w-full rounded-2xl border border-stone-300 px-4 py-3 outline-none focus:border-stone-950"
             />
           </label>
@@ -718,14 +718,14 @@ ${contactMessage}`
               required
               value={contactMessage}
               onChange={(event) => setContactMessage(event.target.value)}
-              placeholder="Cuéntame qué necesitas"
+              placeholder="Escríbeme sin prisa"
               rows="5"
               className="w-full rounded-2xl border border-stone-300 px-4 py-3 outline-none focus:border-stone-950"
             />
           </label>
 
           <button type="submit" className="mt-6 inline-flex rounded-full bg-stone-900 px-7 py-4 text-sm font-medium text-white hover:bg-stone-700">
-            Enviar mensaje
+            Enviar
           </button>
         </form>
       </section>
@@ -791,7 +791,8 @@ function runTests() {
   console.assert(!document.documentElement.innerHTML.includes("Carrusel"), "Las páginas de galería no deben mostrar la palabra Carrusel.");
   console.assert(document.documentElement.innerHTML.includes("Volver al portfolio"), "Cada galería debe permitir volver al portfolio.");
   console.assert(document.documentElement.innerHTML.includes("Email"), "El formulario de contacto debe incluir un campo Email.");
-  console.assert(document.documentElement.innerHTML.includes("Enviar mensaje"), "El formulario de contacto debe tener botón de envío.");
+  console.assert(document.documentElement.innerHTML.includes("Enviar"), "El formulario de contacto debe tener botón de envío.");
+  console.assert(document.documentElement.innerHTML.includes("Hablemos con calma."), "Contacto debe mantener un tono humano y cercano.");
   console.assert(!document.documentElement.innerHTML.includes("Reservar sesión"), "No debe aparecer Reservar sesión.");
 }
 
