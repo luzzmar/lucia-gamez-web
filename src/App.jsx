@@ -626,22 +626,30 @@ function Admin() {
 
 function Footer({ open }) {
   return (
-    <footer className="border-t border-stone-200 bg-stone-50 px-6 py-10">
-      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 md:flex-row">
-        <p className="font-serif text-2xl text-stone-950">Lucía Gámez</p>
-        <p className="text-sm text-stone-500">© Lucía Gámez Photo · Proyectos Fotográficos</p>
-        <div className="flex flex-wrap gap-3">
-          <a href="https://www.instagram.com/luzzmar/" className="rounded-full border border-stone-300 px-4 py-3 text-sm text-stone-600 hover:bg-stone-900 hover:text-white">Instagram</a>
-          <a href="https://www.facebook.com/Luzzzmar/" className="rounded-full border border-stone-300 px-4 py-3 text-sm text-stone-600 hover:bg-stone-900 hover:text-white">Facebook</a>
-          <a href="https://1x.com/luciagamez" className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-stone-300 text-sm font-semibold text-stone-600 hover:bg-stone-900 hover:text-white">1×</a>
-          <button onClick={() => open("admin")} className="rounded-full border border-stone-300 px-4 py-3 text-sm text-stone-600 hover:bg-stone-900 hover:text-white">Admin</button>
+    <footer className="border-t border-stone-200 bg-stone-50 px-6 py-16">
+      <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[1.2fr_0.8fr] md:items-end">
+        <div>
+          <p className="font-serif text-4xl leading-none text-stone-950 md:text-5xl">Lucía Gámez Photo</p>
+          <p className="mt-5 max-w-xl text-sm leading-7 text-stone-500 md:text-base">
+            Fotografías con alma. Una forma pausada de mirar.
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-6 md:items-end">
+          <div className="flex flex-wrap gap-x-6 gap-y-3 text-sm text-stone-600">
+            <a href="https://www.instagram.com/luzzmar/" className="transition hover:text-stone-950">Instagram</a>
+            <a href="https://www.facebook.com/Luzzzmar/" className="transition hover:text-stone-950">Facebook</a>
+            <a href="https://1x.com/luciagamez" className="transition hover:text-stone-950">1×</a>
+            <button type="button" onClick={() => open("contacto")} className="transition hover:text-stone-950">Contacto</button>
+          </div>
+          <p className="text-xs uppercase tracking-[0.35em] text-stone-400">© Lucía Gámez</p>
         </div>
       </div>
     </footer>
   );
 }
 
-function runTests() {
+function runT
   console.assert(logo === "/logo-original.webp.png", "El logo debe cargarse desde public/logo-original.webp.png");
   console.assert(personPages.length === 6, "Personas debe tener 6 subcategorías.");
   console.assert(!document.documentElement.innerHTML.includes(">Personas<"), "El menú principal no debe mostrar la opción general Personas.");
