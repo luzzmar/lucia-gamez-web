@@ -281,6 +281,9 @@ function Clients() {
   const [password, setPassword] = useState("");
   const [accessGranted, setAccessGranted] = useState(null);
   const [error, setError] = useState("");
+  const [activeImageIndex, setActiveImageIndex] = useState(null);
+
+  const activeImage = accessGranted && activeImageIndex !== null ? accessGranted.images[activeImageIndex] : null;
 
   function submitPrivateAccess(event) {
     event.preventDefault();
@@ -296,6 +299,7 @@ function Clients() {
     if (!gallery || password.trim() !== gallery.password) {
       setError("Nombre o contraseña incorrectos. Revisa los datos de acceso facilitados.");
       setAccessGranted(null);
+      setActiveImageIndex(null);
       return;
     }
 
@@ -303,11 +307,35 @@ function Clients() {
     setClientName("");
     setPassword("");
     setError("");
+    setActiveImageIndex(null);
   }
 
   function closeAccess() {
     setAccessGranted(null);
     setError("");
+    setActiveImageIndex(null);
+  }
+
+  function goToNextImage() {
+    if (!accessGranted || activeImageIndex === null) return;
+    setActiveImageIndex((currentIndex) => {
+      const nextIndex = currentIndex + 1;
+      return nextIndex >= accessGranted.images.length ? 0 : nextIndex;
+    });
+  }
+
+  function goToPreviousImage(event) {
+    event.stopPropagation();
+    if (!accessGranted || activeImageIndex === null) return;
+    setActiveImageIndex((currentIndex) => {
+      const previousIndex = currentIndex - 1;
+      return previousIndex < 0 ? accessGranted.images.length - 1 : previousIndex;
+    });
+  }
+
+  function closeCarousel(event) {
+    event.stopPropagation();
+    setActiveImageIndex(null);
   }
 
   return (
@@ -322,7 +350,7 @@ function Clients() {
             <p className="mb-4 text-xs uppercase tracking-[0.45em] text-stone-300">Área privada</p>
             <h1 className="font-serif text-5xl leading-none md:text-7xl lg:text-8xl">Accede a tu galería.</h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-stone-200">
-              Introduce tu nombre y contraseña para acceder a tu espacio privado de cliente.
+              Introduce tu nombre y contraseña para ver tu galería privada. Las fotografías son sólo para visualización.
             </p>
           </div>
         </div>
@@ -336,7 +364,7 @@ function Clients() {
             <p className="mb-3 text-xs uppercase tracking-[0.4em] text-stone-300">Clientes</p>
             <h2 className="font-serif text-4xl text-white md:text-5xl">Un acceso sencillo y discreto.</h2>
             <p className="mt-4 max-w-md text-sm leading-6 text-stone-300">
-              Esta página sólo muestra el formulario de acceso. Las galerías no aparecen públicamente debajo.
+              Sólo quien tenga su nombre y contraseña podrá ver las fotografías de su galería.
             </p>
           </div>
         </div>
@@ -376,22 +404,70 @@ function Clients() {
             </button>
           </form>
 
-          {accessGranted && (
-            <div className="mt-8 rounded-[1.5rem] border border-white/10 bg-black/20 p-6">
-              <p className="mb-2 text-xs uppercase tracking-[0.35em] text-stone-500">Acceso correcto</p>
-              <h3 className="font-serif text-3xl text-white">Hola, {accessGranted.clientName}</h3>
-              <p className="mt-3 text-sm leading-6 text-stone-400">
-                Tu acceso ha sido validado. No se muestran fotografías en esta página pública.
-              </p>
-              <button type="button" onClick={closeAccess} className="mt-5 rounded-full border border-white/15 px-5 py-3 text-sm text-stone-300 hover:bg-white hover:text-stone-950">
-                Cerrar acceso
-              </button>
-            </div>
-          )}
-
-          <p className="mt-6 text-xs leading-6 text-stone-500">Si no recuerdas tus datos de acceso, contacta conmigo para recuperarlos.</p>
+          <p className="mt-6 text-xs leading-6 text-stone-500">Esta galería es sólo para ver fotografías. No hay opción para guardar archivos desde la web.</p>
         </div>
       </section>
+
+      {accessGranted && (
+        <section className="mx-auto max-w-7xl px-6 pb-24">
+          <div className="mb-10 flex flex-col justify-between gap-6 rounded-[2rem] border border-emerald-300/20 bg-emerald-300/10 p-8 md:flex-row md:items-end">
+            <div>
+              <p className="mb-3 text-xs uppercase tracking-[0.45em] text-emerald-200/80">Galería privada</p>
+              <h2 className="font-serif text-4xl text-white md:text-6xl">{accessGranted.title}</h2>
+              <p className="mt-4 max-w-2xl text-stone-300">
+                Galería de sólo visualización. Las fotografías se muestran únicamente para visualización.
+              </p>
+            </div>
+            <button type="button" onClick={closeAccess} className="rounded-full border border-white/15 px-5 py-3 text-sm text-stone-300 hover:bg-white hover:text-stone-950">
+              Cerrar galería
+            </button>
+          </div>
+
+          <div className="columns-1 gap-5 md:columns-2 xl:columns-3">
+            {accessGranted.images.map((image, index) => (
+              <button
+                key={`${accessGranted.slug}-${index}`}
+                type="button"
+                onClick={() => setActiveImageIndex(index)}
+                className="mb-5 block w-full break-inside-avoid overflow-hidden rounded-[1.75rem] bg-white/[0.03]"
+                aria-label={`Ver fotografía ${index + 1}`}
+              >
+                <img
+                  src={image}
+                  alt={`${accessGranted.title} ${index + 1}`}
+                  draggable="false"
+                  className="w-full select-none object-cover transition duration-500 hover:scale-[1.02]"
+                />
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {activeImage && accessGranted && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4" onClick={goToNextImage}>
+          <button type="button" onClick={closeCarousel} className="absolute right-5 top-5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm text-white hover:bg-white hover:text-stone-950">
+            Cerrar
+          </button>
+          <button
+            type="button"
+            onClick={goToPreviousImage}
+            className="absolute left-5 top-1/2 hidden -translate-y-1/2 rounded-full border border-white/20 bg-white/10 px-4 py-3 text-2xl text-white hover:bg-white hover:text-stone-950 md:block"
+            aria-label="Foto anterior"
+          >
+            ‹
+          </button>
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 rounded-full border border-white/15 bg-black/40 px-4 py-2 text-xs text-stone-300 backdrop-blur">
+            {activeImageIndex + 1} / {accessGranted.images.length} · Sólo visualización
+          </div>
+          <img
+            src={activeImage}
+            alt={`${accessGranted.title} ${activeImageIndex + 1}`}
+            draggable="false"
+            className="max-h-[88vh] max-w-full cursor-pointer select-none rounded-2xl object-contain"
+          />
+        </div>
+      )}
     </main>
   );
 }
@@ -475,6 +551,7 @@ function runTests() {
   console.assert(clientGalleries.every((gallery) => gallery.accessCode && gallery.password), "Cada galería privada conserva un código interno y contraseña.");
   console.assert(clientGalleries.every((gallery) => gallery.images.length >= 4), "Cada galería privada debe tener al menos 4 imágenes disponibles internamente.");
   console.assert(clientGalleries.every((gallery) => gallery.images[0] === gallery.cover), "La primera foto de cada carrusel debe ser la portada de su galería.");
+  console.assert(clientGalleries.every((gallery) => normalizeAccess(gallery.clientName).length > 0), "Cada cliente debe poder identificarse con un nombre válido.");
   console.assert(!document.documentElement.innerHTML.includes("Reservar sesión"), "No debe aparecer Reservar sesión.");
 }
 
