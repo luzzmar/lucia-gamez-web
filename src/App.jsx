@@ -274,10 +274,11 @@ function Clients() {
   const [password, setPassword] = useState("");
   const [unlocked, setUnlocked] = useState({});
   const [error, setError] = useState("");
-  const [activeImage, setActiveImage] = useState(null);
+  const [activeImageIndex, setActiveImageIndex] = useState(null);
 
   const selectedGallery = clientGalleries.find((gallery) => gallery.slug === selectedSlug) || clientGalleries[0];
   const isUnlocked = Boolean(selectedGallery && unlocked[selectedGallery.slug]);
+  const activeImage = selectedGallery && activeImageIndex !== null ? selectedGallery.images[activeImageIndex] : null;
 
   function submitPassword(event) {
     event.preventDefault();
@@ -290,6 +291,28 @@ function Clients() {
     } else {
       setError("Contraseña incorrecta. Revisa la clave de tu galería.");
     }
+  }
+
+  function goToNextImage() {
+    if (!selectedGallery || activeImageIndex === null) return;
+    setActiveImageIndex((currentIndex) => {
+      const nextIndex = currentIndex + 1;
+      return nextIndex >= selectedGallery.images.length ? 0 : nextIndex;
+    });
+  }
+
+  function goToPreviousImage(event) {
+    event.stopPropagation();
+    if (!selectedGallery || activeImageIndex === null) return;
+    setActiveImageIndex((currentIndex) => {
+      const previousIndex = currentIndex - 1;
+      return previousIndex < 0 ? selectedGallery.images.length - 1 : previousIndex;
+    });
+  }
+
+  function closeCarousel(event) {
+    event.stopPropagation();
+    setActiveImageIndex(null);
   }
 
   return (
@@ -331,6 +354,7 @@ function Clients() {
                   setSelectedSlug(gallery.slug);
                   setPassword("");
                   setError("");
+                  setActiveImageIndex(null);
                 }}
                 className={`group overflow-hidden rounded-[2rem] border text-left transition ${
                   selected ? "border-white/40 bg-white/5" : "border-white/10 bg-white/[0.03] hover:border-white/25 hover:bg-white/[0.05]"
@@ -400,7 +424,10 @@ function Clients() {
               </div>
               <button
                 type="button"
-                onClick={() => setUnlocked((current) => ({ ...current, [selectedGallery.slug]: false }))}
+                onClick={() => {
+                  setUnlocked((current) => ({ ...current, [selectedGallery.slug]: false }));
+                  setActiveImageIndex(null);
+                }}
                 className="rounded-full border border-white/15 px-5 py-3 text-sm text-stone-300 hover:bg-white hover:text-stone-950"
               >
                 Cerrar galería
@@ -412,7 +439,7 @@ function Clients() {
                 <button
                   key={`${selectedGallery.slug}-${index}`}
                   type="button"
-                  onClick={() => setActiveImage(image)}
+                  onClick={() => setActiveImageIndex(index)}
                   className="mb-5 block w-full break-inside-avoid overflow-hidden rounded-[1.75rem] bg-white/[0.03]"
                 >
                   <img src={image} alt={`${selectedGallery.title} ${index + 1}`} className="w-full object-cover transition duration-500 hover:scale-[1.02]" />
@@ -423,16 +450,34 @@ function Clients() {
         )}
       </section>
 
-      {activeImage && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4" onClick={() => setActiveImage(null)}>
+      {activeImage && selectedGallery && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4" onClick={goToNextImage}>
           <button
             type="button"
-            onClick={() => setActiveImage(null)}
+            onClick={closeCarousel}
             className="absolute right-5 top-5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm text-white hover:bg-white hover:text-stone-950"
           >
             Cerrar
           </button>
-          <img src={activeImage} alt="Vista ampliada" className="max-h-[88vh] max-w-full rounded-2xl object-contain" />
+
+          <button
+            type="button"
+            onClick={goToPreviousImage}
+            className="absolute left-5 top-1/2 hidden -translate-y-1/2 rounded-full border border-white/20 bg-white/10 px-4 py-3 text-2xl text-white hover:bg-white hover:text-stone-950 md:block"
+            aria-label="Foto anterior"
+          >
+            ‹
+          </button>
+
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 rounded-full border border-white/15 bg-black/40 px-4 py-2 text-xs text-stone-300 backdrop-blur">
+            {activeImageIndex + 1} / {selectedGallery.images.length} · Pincha en la foto para ver la siguiente
+          </div>
+
+          <img
+            src={activeImage}
+            alt={`${selectedGallery.title} ${activeImageIndex + 1}`}
+            className="max-h-[88vh] max-w-full cursor-pointer rounded-2xl object-contain"
+          />
         </div>
       )}
     </main>
@@ -515,6 +560,7 @@ function runTests() {
   console.assert(clientGalleries.length >= 2, "Debe haber varias galerías privadas de clientes.");
   console.assert(clientGalleries.every((gallery) => gallery.password), "Cada galería privada debe tener contraseña.");
   console.assert(clientGalleries.every((gallery) => gallery.images.length >= 4), "Cada galería privada debe tener al menos 4 imágenes.");
+  console.assert(clientGalleries.every((gallery) => gallery.images[0] === gallery.cover), "La primera foto de cada carrusel debe ser la portada de su galería.");
   console.assert(!document.documentElement.innerHTML.includes("Reservar sesión"), "No debe aparecer Reservar sesión.");
 }
 
