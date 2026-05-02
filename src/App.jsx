@@ -221,18 +221,16 @@ function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-6 py-24">
+      <section className="mx-auto max-w-6xl px-6 py-24">
         <div className="rounded-[2rem] border border-stone-200 bg-white p-8 shadow-sm md:p-12">
           <p className="font-serif text-3xl leading-tight text-stone-950 md:text-5xl">
             Imágenes nacidas de una forma pausada de mirar.
           </p>
-          <div className="mt-8 grid gap-8 text-base leading-8 text-stone-600 md:grid-cols-2">
-            <p>
-              Me gusta observar la luz, los silencios, los gestos pequeños y aquello que a veces pasa desapercibido.
-            </p>
-            <p>
-              Busco fotografías honestas, sensibles y atemporales; imágenes que guarden memoria, emoción y presencia.
-            </p>
+
+          <div className="mt-8 space-y-4 text-base leading-8 text-stone-600 md:text-lg">
+            <p className="md:whitespace-nowrap">Me gusta observar la luz, los silencios y los gestos pequeños.</p>
+            <p className="md:whitespace-nowrap">Busco fotografías honestas, sensibles y atemporales.</p>
+            <p className="md:whitespace-nowrap">Imágenes que guarden memoria, emoción y presencia.</p>
           </div>
         </div>
       </section>
