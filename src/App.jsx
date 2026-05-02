@@ -157,36 +157,48 @@ function Header({ open, currentPage }) {
   const isPersonPage = currentPage === "personas" || personPages.some((item) => item.slug === currentPage);
   const isActive = (name) => currentPage === name;
 
-  const linkClass = (active) =>
-    active ? "text-stone-950" : "text-stone-500 transition hover:text-stone-950";
+  const menuItems = [
+    { slug: "home", label: "Bienvenidos", active: isActive("home") },
+    { slug: "arquitectura", label: "Arquitectura", active: isActive("arquitectura") },
+    { slug: "natura", label: "Natura", active: isActive("natura") },
+    { slug: "personas", label: "Personas", active: isPersonPage },
+    { slug: "dulce-espera", label: "Dulce espera", active: isActive("dulce-espera") },
+    { slug: "new-born", label: "New Born", active: isActive("new-born") },
+    { slug: "ninos", label: "Niños", active: isActive("ninos") },
+    { slug: "comuniones", label: "Comuniones", active: isActive("comuniones") },
+    { slug: "familias", label: "Familias", active: isActive("familias") },
+    { slug: "mayores", label: "Mayores", active: isActive("mayores") },
+    { slug: "still-life", label: "Still Life", active: isActive("still-life") },
+    { slug: "clientes", label: "Clientes", active: isActive("clientes") },
+    { slug: "blog", label: "Blog", active: isActive("blog") },
+    { slug: "contacto", label: "Contacto", active: isActive("contacto") },
+  ];
 
   return (
     <header className="sticky top-0 z-50 border-b border-stone-200 bg-stone-50/90 backdrop-blur">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
-        <button onClick={() => open("home")} className="flex h-24 w-56 items-center md:h-28 md:w-72">
-          <img src={logo} alt="Lucía Gámez Photo" className="h-full w-full object-contain object-left" />
-        </button>
+      <div className="mx-auto max-w-7xl px-6 py-3">
+        <div className="flex items-center justify-between">
+          <button onClick={() => open("home")} className="flex h-20 w-52 items-center md:h-24 md:w-64">
+            <img src={logo} alt="Lucía Gámez Photo" className="h-full w-full object-contain object-left" />
+          </button>
+          <p className="hidden text-xs uppercase tracking-[0.35em] text-stone-400 md:block">Portfolio</p>
+        </div>
 
-        <nav className="hidden items-center gap-5 text-sm md:flex">
-          <button onClick={() => open("home")} className={linkClass(isActive("home"))}>Bienvenidos</button>
-          <button onClick={() => open("arquitectura")} className={linkClass(isActive("arquitectura"))}>Arquitectura</button>
-          <button onClick={() => open("natura")} className={linkClass(isActive("natura"))}>Natura</button>
-
-          <div className="group relative py-3">
-            <button onClick={() => open("personas")} className={linkClass(isPersonPage)}>Personas ⌄</button>
-            <div className="invisible absolute left-0 top-full w-64 translate-y-2 rounded-2xl border border-stone-200 bg-white/95 p-2 opacity-0 shadow-xl shadow-stone-200/70 transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
-              {personPages.map((item) => (
-                <button key={item.slug} onClick={() => open(item.slug)} className="block w-full rounded-xl px-4 py-3 text-left text-sm text-stone-600 hover:bg-stone-100 hover:text-stone-950">
-                  {item.title}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <button onClick={() => open("still-life")} className={linkClass(isActive("still-life"))}>Still Life</button>
-          <button onClick={() => open("clientes")} className={linkClass(isActive("clientes"))}>Clientes</button>
-          <button onClick={() => open("blog")} className={linkClass(isActive("blog"))}>Blog</button>
-          <button onClick={() => open("contacto")} className="rounded-full border border-stone-300 px-5 py-3 font-medium text-stone-900 transition hover:bg-stone-900 hover:text-white">Contacto</button>
+        <nav className="mt-3 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="Menú principal">
+          {menuItems.map((item) => (
+            <button
+              key={item.slug}
+              type="button"
+              onClick={() => open(item.slug)}
+              className={`shrink-0 rounded-full border px-4 py-2 text-sm transition ${
+                item.active
+                  ? "border-stone-900 bg-stone-900 text-white"
+                  : "border-stone-200 bg-white/70 text-stone-600 hover:border-stone-900 hover:text-stone-950"
+              }`}
+            >
+              {item.label}
+            </button>
+          ))}
         </nav>
       </div>
     </header>
@@ -543,3 +555,5 @@ function runTests() {
 }
 
 if (typeof window !== "undefined") runTests();
+
+
