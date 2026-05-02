@@ -751,7 +751,7 @@ function Footer({ open }) {
       <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[1.2fr_0.8fr] md:items-end">
         <div>
           <p className="font-serif text-4xl leading-none text-stone-950 md:text-5xl">Lucía Gámez Photo</p>
-          <p className="mt-5 max-w-xl text-sm leading-7 text-stone-500 md:text-base">
+          <p className="mt-5 whitespace-nowrap text-sm leading-7 text-stone-500 md:text-base">
             Fotografías con alma. Miro despacio para guardar lo que a veces pasa sin hacer ruido.
           </p>
         </div>
