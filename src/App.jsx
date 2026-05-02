@@ -20,7 +20,7 @@ const fontStyles = `
 `;
 
 const photos = {
-  home: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=85",
+  home: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2200&q=90",
   arquitectura: "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1600&q=85",
   natura: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=85",
   personas: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=85",
@@ -221,8 +221,13 @@ function Header({ open, currentPage }) {
 function Home({ open }) {
   return (
     <main className="relative min-h-screen overflow-hidden bg-stone-950 text-white">
-      <img src={photos.home} alt="Fotografía principal" className="absolute inset-0 h-full w-full object-cover" />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/10 to-black/35" />
+      <img
+        src={photos.home}
+        alt="Fotografía principal"
+        className="absolute inset-0 h-full w-full object-cover object-center"
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/5 to-black/45" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/35 via-transparent to-transparent" />
 
       <div className="absolute left-6 top-6 z-20 md:left-10 md:top-8">
         <img src={logo} alt="Lucía Gámez Photo" className="h-24 w-64 object-contain object-left md:h-28 md:w-80" />
@@ -234,6 +239,9 @@ function Home({ open }) {
           <h1 className="whitespace-nowrap font-serif text-4xl leading-none text-white drop-shadow-md md:text-7xl lg:text-8xl">
             Fotografías con alma.
           </h1>
+          <p className="mt-6 max-w-2xl text-sm font-light leading-7 tracking-wide text-white/80 md:text-base">
+            Una forma pausada de mirar.
+          </p>
           <button
             type="button"
             onClick={() => open("arquitectura")}
@@ -646,6 +654,7 @@ function runTests() {
   console.assert(clientGalleries.every((gallery) => gallery.images[0] === gallery.cover), "La primera foto de cada carrusel debe ser la portada de su galería.");
   console.assert(clientGalleries.every((gallery) => normalizeAccess(gallery.clientName).length > 0), "Cada cliente debe poder identificarse con un nombre válido.");
   console.assert(document.documentElement.innerHTML.includes("Fotografías con alma."), "La portada debe mostrar Fotografías con alma.");
+  console.assert(document.documentElement.innerHTML.includes("Una forma pausada de mirar."), "La portada debe incluir una frase breve sobre la mirada fotográfica.");
   console.assert(document.documentElement.innerHTML.includes("Entrar"), "La portada debe permitir entrar al portfolio sin mostrar el menú principal.");
   console.assert(!document.documentElement.innerHTML.includes("Reservar sesión"), "No debe aparecer Reservar sesión.");
 }
