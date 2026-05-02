@@ -155,6 +155,7 @@ export default function App() {
     <div className="lucia-site min-h-screen bg-stone-50 text-stone-900">
       <style>{fontStyles}</style>
       {page !== "home" && <Header open={open} currentPage={page} />}      {page === "home" && <Home open={open} />}
+      {page === "portfolio" && <PortfolioHome open={open} />}
       {page !== "home" && page === "personas" && <Personas open={open} />}
       {mainPage && <Portfolio key={mainPage.slug} item={mainPage} />}
       {personPage && <Portfolio key={personPage.slug} item={personPage} />}
@@ -174,6 +175,7 @@ function Header({ open, currentPage }) {
 
   const menuItems = [
     { slug: "home", label: "Bienvenidos", active: isActive("home") },
+    { slug: "portfolio", label: "Portfolio", active: isActive("portfolio") },
     { slug: "arquitectura", label: "Arquitectura", active: isActive("arquitectura") },
     { slug: "natura", label: "Natura", active: isActive("natura") },
     { slug: "dulce-espera", label: "Dulce espera", active: isActive("dulce-espera") },
@@ -244,11 +246,42 @@ function Home({ open }) {
           </p>
           <button
             type="button"
-            onClick={() => open("arquitectura")}
+            onClick={() => open("portfolio")}
             className="mt-8 rounded-full border border-white/40 bg-white/15 px-6 py-3 text-sm font-light tracking-wide text-white backdrop-blur transition hover:bg-white hover:text-stone-950"
           >
             Entrar
           </button>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+function PortfolioHome({ open }) {
+  const portfolioItems = [...mainPages, ...personPages.filter((item) => item.slug !== "familias")];
+
+  return (
+    <main className="bg-stone-50 text-stone-900">
+      <section className="mx-auto max-w-7xl px-6 py-24">
+        <p className="mb-3 text-[11px] uppercase tracking-[0.45em] text-stone-500">Portfolio</p>
+        <h1 className="font-serif text-5xl leading-none text-stone-950 md:text-7xl">Elige una galería.</h1>
+
+        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {portfolioItems.map((item) => (
+            <button
+              key={item.slug}
+              type="button"
+              onClick={() => open(item.slug)}
+              className="group relative min-h-[420px] overflow-hidden rounded-[1.75rem] border border-stone-200 bg-white text-left shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-stone-200/80"
+            >
+              <img src={item.image} alt={item.title} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" />
+              <div className="absolute inset-0 bg-gradient-to-t from-stone-950/75 via-stone-950/10 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-7">
+                <p className="mb-3 text-[11px] uppercase tracking-[0.42em] text-stone-200">Galería</p>
+                <h2 className="font-serif text-4xl text-white">{item.title}</h2>
+              </div>
+            </button>
+          ))}
         </div>
       </section>
     </main>
@@ -664,6 +697,7 @@ function runTests() {
   console.assert(document.documentElement.innerHTML.includes("Fotografías con alma."), "La portada debe mostrar Fotografías con alma.");
   console.assert(document.documentElement.innerHTML.includes("Una forma pausada de mirar."), "La portada debe incluir una frase breve sobre la mirada fotográfica.");
   console.assert(document.documentElement.innerHTML.includes("Entrar"), "La portada debe permitir entrar al portfolio sin mostrar el menú principal.");
+  console.assert(document.documentElement.innerHTML.includes("Portfolio"), "La web debe tener una página intermedia de portfolio antes de entrar en una galería concreta.");
   console.assert(!document.documentElement.innerHTML.includes("Reservar sesión"), "No debe aparecer Reservar sesión.");
 }
 
