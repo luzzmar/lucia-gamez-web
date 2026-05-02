@@ -3,6 +3,22 @@ import React, { useState } from "react";
 const email = "luzzmar@gmail.com";
 const logo = "/logo-original.webp.png";
 
+const fontStyles = `
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Inter:wght@300;400;500&display=swap');
+
+  .lucia-site {
+    font-family: 'Inter', 'Avenir Next', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    letter-spacing: -0.01em;
+  }
+
+  .lucia-site .font-serif {
+    font-family: 'Cormorant Garamond', 'Didot', 'Bodoni 72', Georgia, serif;
+    font-weight: 400;
+    letter-spacing: -0.035em;
+  }
+`;
+
 const photos = {
   home: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=85",
   arquitectura: "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?auto=format&fit=crop&w=1600&q=85",
@@ -136,7 +152,8 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-50 text-stone-900">
+    <div className="lucia-site min-h-screen bg-stone-50 text-stone-900">
+      <style>{fontStyles}</style>
       <Header open={open} currentPage={page} />
 
       {page === "home" && <Home />}
@@ -180,7 +197,7 @@ function Header({ open, currentPage }) {
           <button onClick={() => open("home")} className="flex h-20 w-52 items-center md:h-24 md:w-64">
             <img src={logo} alt="Lucía Gámez Photo" className="h-full w-full object-contain object-left" />
           </button>
-          <p className="hidden text-xs uppercase tracking-[0.35em] text-stone-400 md:block">Portfolio</p>
+          <p className="hidden text-[11px] uppercase tracking-[0.45em] text-stone-400 md:block">Portfolio</p>
         </div>
 
         <nav className="mt-3 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="Menú principal">
@@ -189,7 +206,7 @@ function Header({ open, currentPage }) {
               key={item.slug}
               type="button"
               onClick={() => open(item.slug)}
-              className={`shrink-0 rounded-full border px-4 py-2 text-sm transition ${
+              className={`shrink-0 rounded-full border px-4 py-2 text-[13px] font-light tracking-wide transition ${
                 item.active
                   ? "border-stone-900 bg-stone-900 text-white"
                   : "border-stone-200 bg-white/70 text-stone-600 hover:border-stone-900 hover:text-stone-950"
@@ -213,7 +230,7 @@ function Home() {
 
         <div className="relative mx-auto flex min-h-screen max-w-7xl items-end px-6 pb-24">
           <div className="max-w-4xl">
-            <p className="mb-5 text-xs uppercase tracking-[0.45em] text-white/85">Bienvenidos</p>
+            <p className="mb-5 text-[11px] uppercase tracking-[0.5em] text-white/85">Bienvenidos</p>
             <h1 className="whitespace-nowrap font-serif text-4xl leading-none text-white drop-shadow-md md:text-7xl lg:text-8xl">
               Fotografías con alma.
             </h1>
@@ -246,7 +263,7 @@ function Personas({ open }) {
         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/15 to-stone-50" />
         <div className="relative mx-auto flex min-h-[85vh] max-w-7xl items-end px-6 pb-20">
           <div className="max-w-3xl">
-            <p className="mb-4 text-sm uppercase tracking-[0.35em] text-stone-100">Portfolio</p>
+            <p className="mb-4 text-[11px] uppercase tracking-[0.45em] text-stone-100">Portfolio</p>
             <h1 className="font-serif text-6xl leading-none text-white md:text-8xl">Personas</h1>
           </div>
         </div>
@@ -254,7 +271,7 @@ function Personas({ open }) {
 
       <section className="mx-auto max-w-7xl px-6 py-24">
         <div className="mb-12">
-          <p className="mb-3 text-sm uppercase tracking-[0.35em] text-stone-500">Galerías</p>
+          <p className="mb-3 text-[11px] uppercase tracking-[0.45em] text-stone-500">Galerías</p>
           <h2 className="font-serif text-4xl text-stone-950 md:text-6xl">Elige una historia</h2>
         </div>
 
@@ -264,7 +281,7 @@ function Personas({ open }) {
               <img src={item.image} alt={item.title} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-stone-950/10 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-7">
-                <p className="mb-3 text-xs uppercase tracking-[0.3em] text-stone-200">Personas</p>
+                <p className="mb-3 text-[11px] uppercase tracking-[0.42em] text-stone-200">Personas</p>
                 <h3 className="font-serif text-4xl text-white">{item.title}</h3>
               </div>
             </button>
@@ -318,7 +335,7 @@ function Portfolio({ item }) {
         <div className="absolute inset-0 bg-gradient-to-r from-stone-950/45 via-stone-950/18 to-stone-50/15" />
         <div className="relative mx-auto flex min-h-screen max-w-7xl items-center px-6 py-28">
           <div className="max-w-4xl">
-            <p className="mb-5 inline-flex rounded-full border border-white/40 bg-white/20 px-4 py-2 text-sm text-white backdrop-blur">Portfolio</p>
+            <p className="mb-5 inline-flex rounded-full border border-white/40 bg-white/20 px-4 py-2 text-[11px] uppercase tracking-[0.35em] text-white backdrop-blur">Portfolio</p>
             <h1 className="font-serif text-5xl leading-none text-white md:text-8xl">{item.title}</h1>
           </div>
         </div>
@@ -326,7 +343,7 @@ function Portfolio({ item }) {
 
       <section className="mx-auto max-w-7xl px-6 py-24">
         <div className="mb-10">
-          <p className="mb-3 text-sm uppercase tracking-[0.35em] text-stone-500">Galería</p>
+          <p className="mb-3 text-[11px] uppercase tracking-[0.45em] text-stone-500">Galería</p>
           <h2 className="font-serif text-4xl text-stone-950 md:text-6xl">Carrusel</h2>
         </div>
 
@@ -438,7 +455,7 @@ function Clients() {
 
         <div className="relative mx-auto flex min-h-[78vh] max-w-7xl items-end px-6 pb-20">
           <div className="max-w-4xl">
-            <p className="mb-4 text-xs uppercase tracking-[0.45em] text-white">Área privada</p>
+            <p className="mb-4 text-[11px] uppercase tracking-[0.5em] text-white">Área privada</p>
             <h1 className="font-serif text-5xl leading-none text-white md:text-7xl lg:text-8xl">Accede a tu galería.</h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-white/85">Nombre y contraseña.</p>
           </div>
@@ -450,14 +467,14 @@ function Clients() {
           <img src={photos.clientes} alt="Acceso privado" className="absolute inset-0 h-full w-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-stone-950/65 via-stone-950/10 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 p-8">
-            <p className="mb-3 text-xs uppercase tracking-[0.4em] text-stone-100">Clientes</p>
+            <p className="mb-3 text-[11px] uppercase tracking-[0.45em] text-stone-100">Clientes</p>
             <h2 className="font-serif text-4xl text-white md:text-5xl">Un acceso sencillo.</h2>
             <p className="mt-4 max-w-md text-sm leading-6 text-stone-200">Acceso privado.</p>
           </div>
         </div>
 
         <div className="rounded-[2rem] border border-stone-200 bg-white p-8 shadow-sm md:p-10">
-          <p className="mb-3 text-xs uppercase tracking-[0.45em] text-stone-500">Acceso clientes</p>
+          <p className="mb-3 text-[11px] uppercase tracking-[0.45em] text-stone-500">Acceso clientes</p>
           <h2 className="font-serif text-4xl text-stone-950 md:text-6xl">Galería privada</h2>
           <p className="mt-5 max-w-xl text-stone-500">Nombre y contraseña.</p>
 
@@ -499,7 +516,7 @@ function Clients() {
         <section className="mx-auto max-w-7xl px-6 pb-24">
           <div className="mb-10 flex flex-col justify-between gap-6 rounded-[2rem] border border-stone-200 bg-white p-8 shadow-sm md:flex-row md:items-end">
             <div>
-              <p className="mb-3 text-xs uppercase tracking-[0.45em] text-stone-500">Galería privada</p>
+              <p className="mb-3 text-[11px] uppercase tracking-[0.45em] text-stone-500">Galería privada</p>
               <h2 className="font-serif text-4xl text-stone-950 md:text-6xl">{accessGranted.title}</h2>
               <p className="mt-4 max-w-2xl text-stone-500">Sólo visualización.</p>
             </div>
@@ -561,7 +578,7 @@ function Blog() {
   return (
     <main className="bg-stone-50 px-6 py-24 text-stone-950">
       <section className="mx-auto max-w-7xl">
-        <p className="mb-3 text-sm uppercase tracking-[0.35em] text-stone-500">Blog</p>
+        <p className="mb-3 text-[11px] uppercase tracking-[0.45em] text-stone-500">Blog</p>
         <h1 className="max-w-4xl font-serif text-6xl">Notas.</h1>
         <div className="mt-12 grid gap-6 md:grid-cols-2">
           <article className="rounded-[2rem] border border-stone-200 bg-white p-8 shadow-sm">
@@ -581,7 +598,7 @@ function Contact() {
     <main className="bg-stone-50 px-6 py-24 text-stone-950">
       <section className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-2">
         <div>
-          <p className="mb-3 text-sm uppercase tracking-[0.35em] text-stone-500">Contacto</p>
+          <p className="mb-3 text-[11px] uppercase tracking-[0.45em] text-stone-500">Contacto</p>
           <h2 className="font-serif text-5xl">Hablemos.</h2>
           <a href={`mailto:${email}`} className="mt-10 inline-flex rounded-full bg-stone-900 px-5 py-3 text-sm font-medium text-white hover:bg-stone-700">{email}</a>
         </div>
@@ -599,7 +616,7 @@ function Admin() {
   return (
     <main className="bg-stone-50 px-6 py-24 text-stone-950">
       <section className="mx-auto max-w-5xl rounded-[2rem] border border-stone-200 bg-white p-8 shadow-sm">
-        <p className="mb-3 text-sm uppercase tracking-[0.35em] text-stone-500">Admin</p>
+        <p className="mb-3 text-[11px] uppercase tracking-[0.45em] text-stone-500">Admin</p>
         <h1 className="font-serif text-5xl">Panel de edición</h1>
         <p className="mt-6 text-stone-600">Panel privado.</p>
       </section>
