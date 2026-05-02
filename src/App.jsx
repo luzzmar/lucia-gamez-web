@@ -224,18 +224,20 @@ function Header({ open, currentPage }) {
 function Home() {
   return (
     <main className="bg-stone-50 text-stone-900">
-      <section className="relative min-h-screen overflow-hidden">
-        <img src={photos.home} alt="Fotografía principal" className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-b from-stone-50/20 via-stone-950/10 to-stone-50" />
-
-        <div className="relative mx-auto flex min-h-screen max-w-7xl items-end px-6 pb-24">
-          <div className="max-w-4xl">
-            <p className="mb-5 text-[11px] uppercase tracking-[0.5em] text-white/85">Bienvenidos</p>
-            <h1 className="whitespace-nowrap font-serif text-4xl leading-none text-white drop-shadow-md md:text-7xl lg:text-8xl">
+      <div className="pointer-events-none fixed left-0 right-0 top-36 z-40 px-6 md:top-40">
+        <div className="mx-auto max-w-7xl">
+          <div className="inline-block rounded-[1.5rem] border border-white/60 bg-stone-50/75 px-6 py-5 shadow-sm backdrop-blur-md md:px-8 md:py-6">
+            <p className="mb-3 text-[11px] uppercase tracking-[0.5em] text-stone-500">Bienvenidos</p>
+            <h1 className="whitespace-nowrap font-serif text-4xl leading-none text-stone-950 md:text-7xl lg:text-8xl">
               Fotografías con alma.
             </h1>
           </div>
         </div>
+      </div>
+
+      <section className="relative min-h-screen overflow-hidden">
+        <img src={photos.home} alt="Fotografía principal" className="absolute inset-0 h-full w-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-b from-stone-50/20 via-stone-950/10 to-stone-50" />
       </section>
 
       <section className="mx-auto max-w-6xl px-6 py-24">
@@ -652,7 +654,8 @@ function runTests() {
   console.assert(clientGalleries.every((gallery) => gallery.images.length >= 4), "Cada galería privada debe tener al menos 4 imágenes disponibles internamente.");
   console.assert(clientGalleries.every((gallery) => gallery.images[0] === gallery.cover), "La primera foto de cada carrusel debe ser la portada de su galería.");
   console.assert(clientGalleries.every((gallery) => normalizeAccess(gallery.clientName).length > 0), "Cada cliente debe poder identificarse con un nombre válido.");
-  console.assert(!document.documentElement.innerHTML.includes("Reservar sesión"), "No debe aparecer Reservar sesión.");
+  console.assert(document.documentElement.innerHTML.includes("Fotografías con alma."), "La portada debe mostrar Fotografías con alma.");
+  console.assert(!document.documentElement.innerHTML.includes("Reservar sesión"), "No debe aparece
 }
 
 if (typeof window !== "undefined") runTests();
