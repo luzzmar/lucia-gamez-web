@@ -90,6 +90,7 @@ const personPages = [
 const clientGalleries = [
   {
     slug: "familia-garcia",
+    accessCode: "garcia",
     title: "Familia García",
     clientName: "Familia García",
     password: "garcia2026",
@@ -99,6 +100,7 @@ const clientGalleries = [
   },
   {
     slug: "comunion-alba",
+    accessCode: "alba",
     title: "Comunión de Alba",
     clientName: "Alba",
     password: "alba2026",
@@ -108,6 +110,7 @@ const clientGalleries = [
   },
   {
     slug: "new-born-demo",
+    accessCode: "demo",
     title: "New Born Demo",
     clientName: "Cliente demo",
     password: "demo2026",
@@ -116,6 +119,10 @@ const clientGalleries = [
     images: [photos.newborn, photos.dulceEspera, photos.familias, photos.ninos],
   },
 ];
+
+function normalizeAccess(value) {
+  return String(value || "").trim().toLowerCase();
+}
 
 export default function App() {
   const [page, setPage] = useState("home");
@@ -270,216 +277,121 @@ function Portfolio({ item }) {
 }
 
 function Clients() {
-  const [selectedSlug, setSelectedSlug] = useState(clientGalleries[0]?.slug || "");
+  const [clientName, setClientName] = useState("");
   const [password, setPassword] = useState("");
-  const [unlocked, setUnlocked] = useState({});
+  const [accessGranted, setAccessGranted] = useState(null);
   const [error, setError] = useState("");
-  const [activeImageIndex, setActiveImageIndex] = useState(null);
 
-  const selectedGallery = clientGalleries.find((gallery) => gallery.slug === selectedSlug) || clientGalleries[0];
-  const isUnlocked = Boolean(selectedGallery && unlocked[selectedGallery.slug]);
-  const activeImage = selectedGallery && activeImageIndex !== null ? selectedGallery.images[activeImageIndex] : null;
-
-  function submitPassword(event) {
+  function submitPrivateAccess(event) {
     event.preventDefault();
-    if (!selectedGallery) return;
 
-    if (password.trim() === selectedGallery.password) {
-      setUnlocked((current) => ({ ...current, [selectedGallery.slug]: true }));
-      setPassword("");
-      setError("");
-    } else {
-      setError("Contraseña incorrecta. Revisa la clave de tu galería.");
+    const normalizedName = normalizeAccess(clientName);
+    const gallery = clientGalleries.find(
+      (item) =>
+        normalizeAccess(item.clientName) === normalizedName ||
+        normalizeAccess(item.title) === normalizedName ||
+        normalizeAccess(item.accessCode) === normalizedName
+    );
+
+    if (!gallery || password.trim() !== gallery.password) {
+      setError("Nombre o contraseña incorrectos. Revisa los datos de acceso facilitados.");
+      setAccessGranted(null);
+      return;
     }
+
+    setAccessGranted(gallery);
+    setClientName("");
+    setPassword("");
+    setError("");
   }
 
-  function goToNextImage() {
-    if (!selectedGallery || activeImageIndex === null) return;
-    setActiveImageIndex((currentIndex) => {
-      const nextIndex = currentIndex + 1;
-      return nextIndex >= selectedGallery.images.length ? 0 : nextIndex;
-    });
-  }
-
-  function goToPreviousImage(event) {
-    event.stopPropagation();
-    if (!selectedGallery || activeImageIndex === null) return;
-    setActiveImageIndex((currentIndex) => {
-      const previousIndex = currentIndex - 1;
-      return previousIndex < 0 ? selectedGallery.images.length - 1 : previousIndex;
-    });
-  }
-
-  function closeCarousel(event) {
-    event.stopPropagation();
-    setActiveImageIndex(null);
+  function closeAccess() {
+    setAccessGranted(null);
+    setError("");
   }
 
   return (
     <main className="bg-stone-950 text-white">
       <section className="relative min-h-[82vh] overflow-hidden">
         <img src={photos.clientes} alt="Clientes" className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-black/55" />
+        <div className="absolute inset-0 bg-black/60" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/45 to-stone-950" />
 
         <div className="relative mx-auto flex min-h-[82vh] max-w-7xl items-end px-6 pb-20">
           <div className="max-w-4xl">
-            <p className="mb-4 text-xs uppercase tracking-[0.45em] text-stone-300">Galerías privadas</p>
-            <h1 className="font-serif text-5xl leading-none md:text-7xl lg:text-8xl">Un espacio privado para cada historia.</h1>
+            <p className="mb-4 text-xs uppercase tracking-[0.45em] text-stone-300">Área privada</p>
+            <h1 className="font-serif text-5xl leading-none md:text-7xl lg:text-8xl">Accede a tu galería.</h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-stone-200">
-              Cada cliente dispone de su propia galería protegida con contraseña para ver, seleccionar y compartir sus fotografías con calma.
+              Introduce tu nombre y contraseña para acceder a tu espacio privado de cliente.
             </p>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-20">
-        <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <div>
-            <p className="mb-3 text-xs uppercase tracking-[0.45em] text-stone-500">Acceso clientes</p>
-            <h2 className="font-serif text-4xl md:text-6xl">Selecciona tu galería</h2>
+      <section className="mx-auto grid max-w-6xl gap-8 px-6 py-20 lg:grid-cols-[0.95fr_1.05fr] lg:items-stretch">
+        <div className="relative min-h-[520px] overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03]">
+          <img src={photos.clientes} alt="Acceso privado" className="absolute inset-0 h-full w-full object-cover opacity-80" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 p-8">
+            <p className="mb-3 text-xs uppercase tracking-[0.4em] text-stone-300">Clientes</p>
+            <h2 className="font-serif text-4xl text-white md:text-5xl">Un acceso sencillo y discreto.</h2>
+            <p className="mt-4 max-w-md text-sm leading-6 text-stone-300">
+              Esta página sólo muestra el formulario de acceso. Las galerías no aparecen públicamente debajo.
+            </p>
           </div>
-          <p className="max-w-xl text-stone-400">Galerías privadas independientes, con una estética limpia y pensada para presentar el trabajo de forma profesional.</p>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {clientGalleries.map((gallery) => {
-            const selected = selectedSlug === gallery.slug;
+        <div className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 shadow-2xl shadow-black/30 backdrop-blur md:p-10">
+          <p className="mb-3 text-xs uppercase tracking-[0.45em] text-stone-500">Acceso clientes</p>
+          <h2 className="font-serif text-4xl text-white md:text-6xl">Galería privada</h2>
+          <p className="mt-5 max-w-xl text-stone-400">Introduce tu nombre y la contraseña recibida.</p>
 
-            return (
-              <button
-                key={gallery.slug}
-                type="button"
-                onClick={() => {
-                  setSelectedSlug(gallery.slug);
-                  setPassword("");
-                  setError("");
-                  setActiveImageIndex(null);
-                }}
-                className={`group overflow-hidden rounded-[2rem] border text-left transition ${
-                  selected ? "border-white/40 bg-white/5" : "border-white/10 bg-white/[0.03] hover:border-white/25 hover:bg-white/[0.05]"
-                }`}
-              >
-                <div className="relative aspect-[4/5] overflow-hidden">
-                  <img src={gallery.cover} alt={gallery.title} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent" />
-                  <div className="absolute left-5 top-5 rounded-full border border-white/20 bg-black/25 px-4 py-2 text-[11px] uppercase tracking-[0.28em] text-stone-200 backdrop-blur">Privada</div>
-                  <div className="absolute inset-x-0 bottom-0 p-7">
-                    <h3 className="font-serif text-4xl text-white">{gallery.title}</h3>
-                    <p className="mt-3 text-sm leading-6 text-stone-300">{gallery.description}</p>
-                  </div>
-                </div>
+          <form onSubmit={submitPrivateAccess} className="mt-8 space-y-5">
+            <label className="block">
+              <span className="mb-2 block text-sm text-stone-300">Nombre</span>
+              <input
+                value={clientName}
+                onChange={(event) => setClientName(event.target.value)}
+                type="text"
+                placeholder="Tu nombre"
+                className="w-full rounded-2xl border border-white/15 bg-black/20 px-4 py-3 text-white outline-none placeholder:text-stone-500 focus:border-white/40"
+              />
+            </label>
+
+            <label className="block">
+              <span className="mb-2 block text-sm text-stone-300">Contraseña</span>
+              <input
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                type="password"
+                placeholder="Introduce tu contraseña"
+                className="w-full rounded-2xl border border-white/15 bg-black/20 px-4 py-3 text-white outline-none placeholder:text-stone-500 focus:border-white/40"
+              />
+            </label>
+
+            {error && <p className="rounded-2xl bg-red-500/10 p-4 text-sm text-red-200">{error}</p>}
+
+            <button type="submit" className="inline-flex rounded-full border border-white/20 bg-white px-7 py-3 text-sm font-medium text-stone-950 transition hover:bg-stone-200">
+              Entrar
+            </button>
+          </form>
+
+          {accessGranted && (
+            <div className="mt-8 rounded-[1.5rem] border border-white/10 bg-black/20 p-6">
+              <p className="mb-2 text-xs uppercase tracking-[0.35em] text-stone-500">Acceso correcto</p>
+              <h3 className="font-serif text-3xl text-white">Hola, {accessGranted.clientName}</h3>
+              <p className="mt-3 text-sm leading-6 text-stone-400">
+                Tu acceso ha sido validado. No se muestran fotografías en esta página pública.
+              </p>
+              <button type="button" onClick={closeAccess} className="mt-5 rounded-full border border-white/15 px-5 py-3 text-sm text-stone-300 hover:bg-white hover:text-stone-950">
+                Cerrar acceso
               </button>
-            );
-          })}
+            </div>
+          )}
+
+          <p className="mt-6 text-xs leading-6 text-stone-500">Si no recuerdas tus datos de acceso, contacta conmigo para recuperarlos.</p>
         </div>
-
-        {selectedGallery && !isUnlocked && (
-          <section className="mx-auto mt-16 max-w-5xl overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] shadow-2xl shadow-black/30 backdrop-blur">
-            <div className="grid md:grid-cols-[1.15fr_0.85fr]">
-              <div className="relative min-h-[360px]">
-                <img src={selectedGallery.cover} alt={selectedGallery.title} className="absolute inset-0 h-full w-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 p-8">
-                  <p className="mb-3 text-xs uppercase tracking-[0.4em] text-stone-300">Acceso privado</p>
-                  <h3 className="font-serif text-4xl text-white md:text-5xl">{selectedGallery.title}</h3>
-                  <p className="mt-4 max-w-md text-sm leading-6 text-stone-300">Introduce la contraseña facilitada para acceder a esta galería.</p>
-                </div>
-              </div>
-
-              <div className="flex items-center p-8 md:p-10">
-                <form onSubmit={submitPassword} className="w-full">
-                  <p className="mb-3 text-xs uppercase tracking-[0.35em] text-stone-500">Cliente</p>
-                  <h4 className="font-serif text-3xl text-white">{selectedGallery.clientName}</h4>
-
-                  <label className="mt-8 block">
-                    <span className="mb-2 block text-sm text-stone-300">Contraseña</span>
-                    <input
-                      value={password}
-                      onChange={(event) => setPassword(event.target.value)}
-                      type="password"
-                      placeholder="Introduce tu contraseña"
-                      className="w-full rounded-2xl border border-white/15 bg-black/20 px-4 py-3 text-white outline-none placeholder:text-stone-500 focus:border-white/40"
-                    />
-                  </label>
-
-                  {error && <p className="mt-4 rounded-2xl bg-red-500/10 p-4 text-sm text-red-200">{error}</p>}
-
-                  <button type="submit" className="mt-6 inline-flex rounded-full border border-white/20 bg-white px-7 py-3 text-sm font-medium text-stone-950 transition hover:bg-stone-200">
-                    Entrar en la galería
-                  </button>
-                </form>
-              </div>
-            </div>
-          </section>
-        )}
-
-        {selectedGallery && isUnlocked && (
-          <section className="mt-16">
-            <div className="mb-10 flex flex-col justify-between gap-6 rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 md:flex-row md:items-end">
-              <div>
-                <p className="mb-3 text-xs uppercase tracking-[0.45em] text-stone-500">Galería privada</p>
-                <h2 className="font-serif text-4xl text-white md:text-6xl">{selectedGallery.title}</h2>
-                <p className="mt-4 max-w-2xl text-stone-400">{selectedGallery.description}</p>
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  setUnlocked((current) => ({ ...current, [selectedGallery.slug]: false }));
-                  setActiveImageIndex(null);
-                }}
-                className="rounded-full border border-white/15 px-5 py-3 text-sm text-stone-300 hover:bg-white hover:text-stone-950"
-              >
-                Cerrar galería
-              </button>
-            </div>
-
-            <div className="columns-1 gap-5 md:columns-2 xl:columns-3">
-              {selectedGallery.images.map((image, index) => (
-                <button
-                  key={`${selectedGallery.slug}-${index}`}
-                  type="button"
-                  onClick={() => setActiveImageIndex(index)}
-                  className="mb-5 block w-full break-inside-avoid overflow-hidden rounded-[1.75rem] bg-white/[0.03]"
-                >
-                  <img src={image} alt={`${selectedGallery.title} ${index + 1}`} className="w-full object-cover transition duration-500 hover:scale-[1.02]" />
-                </button>
-              ))}
-            </div>
-          </section>
-        )}
       </section>
-
-      {activeImage && selectedGallery && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4" onClick={goToNextImage}>
-          <button
-            type="button"
-            onClick={closeCarousel}
-            className="absolute right-5 top-5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm text-white hover:bg-white hover:text-stone-950"
-          >
-            Cerrar
-          </button>
-
-          <button
-            type="button"
-            onClick={goToPreviousImage}
-            className="absolute left-5 top-1/2 hidden -translate-y-1/2 rounded-full border border-white/20 bg-white/10 px-4 py-3 text-2xl text-white hover:bg-white hover:text-stone-950 md:block"
-            aria-label="Foto anterior"
-          >
-            ‹
-          </button>
-
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 rounded-full border border-white/15 bg-black/40 px-4 py-2 text-xs text-stone-300 backdrop-blur">
-            {activeImageIndex + 1} / {selectedGallery.images.length} · Pincha en la foto para ver la siguiente
-          </div>
-
-          <img
-            src={activeImage}
-            alt={`${selectedGallery.title} ${activeImageIndex + 1}`}
-            className="max-h-[88vh] max-w-full cursor-pointer rounded-2xl object-contain"
-          />
-        </div>
-      )}
     </main>
   );
 }
@@ -558,8 +470,10 @@ function runTests() {
   console.assert(logo === "/logo-original.webp.png", "El logo debe cargarse desde public/logo-original.webp.png");
   console.assert(personPages.length === 6, "Personas debe tener 6 subcategorías.");
   console.assert(clientGalleries.length >= 2, "Debe haber varias galerías privadas de clientes.");
-  console.assert(clientGalleries.every((gallery) => gallery.password), "Cada galería privada debe tener contraseña.");
-  console.assert(clientGalleries.every((gallery) => gallery.images.length >= 4), "Cada galería privada debe tener al menos 4 imágenes.");
+  console.assert(clientGalleries.every((gallery) => gallery.clientName && gallery.password), "Cada galería privada debe tener nombre de cliente y contraseña.");
+  console.assert(new Set(clientGalleries.map((gallery) => normalizeAccess(gallery.clientName))).size === clientGalleries.length, "Cada nombre de cliente debe ser único.");
+  console.assert(clientGalleries.every((gallery) => gallery.accessCode && gallery.password), "Cada galería privada conserva un código interno y contraseña.");
+  console.assert(clientGalleries.every((gallery) => gallery.images.length >= 4), "Cada galería privada debe tener al menos 4 imágenes disponibles internamente.");
   console.assert(clientGalleries.every((gallery) => gallery.images[0] === gallery.cover), "La primera foto de cada carrusel debe ser la portada de su galería.");
   console.assert(!document.documentElement.innerHTML.includes("Reservar sesión"), "No debe aparecer Reservar sesión.");
 }
