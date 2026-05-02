@@ -141,8 +141,8 @@ export default function App() {
 
       {page === "home" && <Home />}
       {page === "personas" && <Personas open={open} />}
-      {mainPage && <Portfolio item={mainPage} />}
-      {personPage && <Portfolio item={personPage} />}
+      {mainPage && <Portfolio key={mainPage.slug} item={mainPage} />}
+      {personPage && <Portfolio key={personPage.slug} item={personPage} />}
       {page === "clientes" && <Clients />}
       {page === "blog" && <Blog />}
       {page === "contacto" && <Contact />}
@@ -161,7 +161,6 @@ function Header({ open, currentPage }) {
     { slug: "home", label: "Bienvenidos", active: isActive("home") },
     { slug: "arquitectura", label: "Arquitectura", active: isActive("arquitectura") },
     { slug: "natura", label: "Natura", active: isActive("natura") },
-    { slug: "personas", label: "Personas", active: isPersonPage },
     { slug: "dulce-espera", label: "Dulce espera", active: isActive("dulce-espera") },
     { slug: "new-born", label: "New Born", active: isActive("new-born") },
     { slug: "ninos", label: "Niños", active: isActive("ninos") },
@@ -256,7 +255,42 @@ function Personas({ open }) {
   );
 }
 
+function getPortfolioImages(item) {
+  const galleries = {
+    arquitectura: [photos.arquitectura, photos.still, photos.home, photos.natura],
+    natura: [photos.natura, photos.home, photos.arquitectura, photos.mayores],
+    "still-life": [photos.still, photos.arquitectura, photos.natura, photos.home],
+    "dulce-espera": [photos.dulceEspera, photos.personas, photos.familias, photos.ninos],
+    "new-born": [photos.newborn, photos.dulceEspera, photos.familias, photos.ninos],
+    ninos: [photos.ninos, photos.familias, photos.personas, photos.comuniones],
+    comuniones: [photos.comuniones, photos.ninos, photos.familias, photos.personas],
+    familias: [photos.familias, photos.personas, photos.ninos, photos.comuniones],
+    mayores: [photos.mayores, photos.familias, photos.personas, photos.natura],
+  };
+
+  return galleries[item.slug] || [item.image];
+}
+
 function Portfolio({ item }) {
+  const galleryImages = getPortfolioImages(item);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeImage = galleryImages[activeIndex] || galleryImages[0];
+
+  function goToNextImage() {
+    setActiveIndex((currentIndex) => {
+      const nextIndex = currentIndex + 1;
+      return nextIndex >= galleryImages.length ? 0 : nextIndex;
+    });
+  }
+
+  function goToPreviousImage(event) {
+    event.stopPropagation();
+    setActiveIndex((currentIndex) => {
+      const previousIndex = currentIndex - 1;
+      return previousIndex < 0 ? galleryImages.length - 1 : previousIndex;
+    });
+  }
+
   return (
     <main className="bg-stone-50 text-stone-900">
       <section className="relative min-h-screen overflow-hidden">
@@ -273,11 +307,40 @@ function Portfolio({ item }) {
       <section className="mx-auto max-w-7xl px-6 py-24">
         <div className="mb-10">
           <p className="mb-3 text-sm uppercase tracking-[0.35em] text-stone-500">Galería</p>
-          <h2 className="font-serif text-4xl text-stone-950 md:text-6xl">Selección</h2>
+          <h2 className="font-serif text-4xl text-stone-950 md:text-6xl">Carrusel</h2>
         </div>
-        <div className="grid gap-5 md:grid-cols-3">
-          {[1, 2, 3, 4, 5, 6].map((number) => (
-            <img key={number} src={item.image} alt={`${item.title} ${number}`} className="aspect-[4/5] rounded-[1.5rem] border border-stone-200 object-cover shadow-sm" />
+
+        <div className="overflow-hidden rounded-[2rem] border border-stone-200 bg-white shadow-sm">
+          <button type="button" onClick={goToNextImage} className="group relative block w-full text-left" aria-label="Ver siguiente fotografía">
+            <img src={activeImage} alt={`${item.title} ${activeIndex + 1}`} draggable="false" className="h-[72vh] w-full select-none object-cover transition duration-700 group-hover:scale-[1.01]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-stone-950/45 via-transparent to-transparent" />
+            <div className="absolute bottom-6 left-6 rounded-full border border-white/25 bg-white/20 px-4 py-2 text-xs text-white backdrop-blur">
+              {activeIndex + 1} / {galleryImages.length} · Pulsa la imagen para avanzar
+            </div>
+            <button
+              type="button"
+              onClick={goToPreviousImage}
+              className="absolute left-6 top-1/2 hidden -translate-y-1/2 rounded-full border border-white/25 bg-white/20 px-4 py-3 text-2xl text-white backdrop-blur transition hover:bg-white hover:text-stone-950 md:block"
+              aria-label="Fotografía anterior"
+            >
+              ‹
+            </button>
+          </button>
+        </div>
+
+        <div className="mt-5 flex gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {galleryImages.map((image, index) => (
+            <button
+              key={`${item.slug}-thumb-${index}`}
+              type="button"
+              onClick={() => setActiveIndex(index)}
+              className={`h-20 w-28 shrink-0 overflow-hidden rounded-2xl border transition ${
+                activeIndex === index ? "border-stone-900" : "border-stone-200 opacity-70 hover:opacity-100"
+              }`}
+              aria-label={`Ir a fotografía ${index + 1}`}
+            >
+              <img src={image} alt={`${item.title} miniatura ${index + 1}`} draggable="false" className="h-full w-full select-none object-cover" />
+            </button>
           ))}
         </div>
       </section>
@@ -544,6 +607,7 @@ function Footer({ open }) {
 function runTests() {
   console.assert(logo === "/logo-original.webp.png", "El logo debe cargarse desde public/logo-original.webp.png");
   console.assert(personPages.length === 6, "Personas debe tener 6 subcategorías.");
+  console.assert(!document.documentElement.innerHTML.includes(">Personas<"), "El menú principal no debe mostrar la opción general Personas.");
   console.assert(clientGalleries.length >= 2, "Debe haber varias galerías privadas de clientes.");
   console.assert(clientGalleries.every((gallery) => gallery.clientName && gallery.password), "Cada galería privada debe tener nombre de cliente y contraseña.");
   console.assert(new Set(clientGalleries.map((gallery) => normalizeAccess(gallery.clientName))).size === clientGalleries.length, "Cada nombre de cliente debe ser único.");
@@ -555,5 +619,3 @@ function runTests() {
 }
 
 if (typeof window !== "undefined") runTests();
-
-
